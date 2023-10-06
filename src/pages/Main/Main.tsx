@@ -1,12 +1,15 @@
 import React from 'react';
-import Logo from '../components/Main/Logo';
+import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
-import Button from '../components/Main/Button';
+import Button from '../../components/Main/Button';
 import {useNavigate} from 'react-router-dom';
 export default function Main() {
   const navigate = useNavigate();
   const handleRegisterClick = () => {
     navigate('/register');
+  };
+  const handleLoginClick = () => {
+    navigate('/home');
   };
   return (
     <>
@@ -24,7 +27,7 @@ export default function Main() {
           <Form.Input type="password"></Form.Input>
         </Form.Content>
       </Form.Wrapper>
-      <LoginButtonWrapper>
+      <LoginButtonWrapper onClick={handleLoginClick}>
         <Button state={false} text="로그인하기" />
       </LoginButtonWrapper>
       <RegisterButtonWrapper>

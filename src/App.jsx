@@ -1,9 +1,10 @@
 import {Header} from './components/Main/header';
 import styled from 'styled-components';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
-import Main from './pages/Main';
-import Register from './pages/Register';
-import RegisterInfo from './pages/RegisterInfo';
+import Main from './pages/Main/Main';
+import Register from './pages/Main/Register';
+import RegisterInfo from './pages/Main/RegisterInfo';
+import Home from './pages/Home/Home';
 function App() {
   return (
     <Phone.Layout>
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Main />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/registerinfo" element={<RegisterInfo />}></Route>
+          <Route path="/home" element={<Home />}></Route>
         </Routes>
       </BrowserRouter>
     </Phone.Layout>

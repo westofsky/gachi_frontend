@@ -1,7 +1,7 @@
 import React from 'react';
-import Logo from '../components/Main/Logo';
+import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
-import Button from '../components/Main/Button';
+import Button from '../../components/Main/Button';
 import {useNavigate} from 'react-router-dom';
 export default function Register() {
   const navigate = useNavigate();
