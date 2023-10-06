@@ -14,7 +14,7 @@ export const Header = () => {
 
 const Wrapper = styled.div`
   width: 393px;
-  height: 43px;
+  height: 2.68rem;
   position: relative;
 `;
 const Info = {

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import {createGlobalStyle} from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -33,7 +33,6 @@ footer, header, hgroup, menu, nav, section {
 display: block;
 }
 body {
-line-height: 1;
 }
 ol, ul {
 list-style: none;
