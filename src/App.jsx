@@ -1,15 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import {Header} from './components/Main/header';
+import styled from 'styled-components';
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-    </>
-  )
+    <Phone.Layout>
+      <Header />
+    </Phone.Layout>
+  );
 }
 
-export default App
+export default App;
+
+const Phone = {
+  Layout: styled.div`
+    width: 393px;
+    height: 852px;
+  `,
+};
