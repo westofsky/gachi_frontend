@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
+import Bottom from '../../components/Home/Bottom';
 
 export default function Home() {
   return (
@@ -54,6 +55,7 @@ export default function Home() {
           <TripItem></TripItem>
         </TripItemWrapper>
       </TripItemGallery>
+      <Bottom />
     </>
   );
 }
@@ -72,7 +74,7 @@ const TripItemWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  transform: translate(-25%, 0%);
+  transform: translate(-27%, 0%);
   width: 216%;
 `;
 const TripItem = styled.div`

@@ -25,6 +25,7 @@ export default App;
 
 const Phone = {
   Layout: styled.div`
+    position: relative;
     width: 393px;
     height: 49rem;
     border: 1px solid black;
