@@ -14,7 +14,7 @@ export default function Main() {
   return (
     <>
       <LogoWrapper>
-        <Logo />
+        <Logo title="Gachi" />
       </LogoWrapper>
       <Title>로그인</Title>
       <Form.Wrapper>

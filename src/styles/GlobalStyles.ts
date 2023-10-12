@@ -49,6 +49,11 @@ table {
 border-collapse: collapse;
 border-spacing: 0;
 }
+*{
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
 `;
-
 export default GlobalStyle;

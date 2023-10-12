@@ -1,23 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useRecoilState} from 'recoil';
+import {isAddTripState} from '../../atoms/atom';
+import {useNavigate} from 'react-router-dom';
 
 export default function Bottom() {
+  const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
+  const navigate = useNavigate();
   return (
     <BottomWrapper>
       <MenuWrapper>
-        <IconWrapper>
+        <IconWrapper onClick={() => navigate('/home')}>
           <MenuIcon src={'/images/home.svg'} />
           <MenuName>홈화면</MenuName>
         </IconWrapper>
-        <IconWrapper>
+        <IconWrapper onClick={() => navigate('/travel-list')}>
           <MenuIcon src={'/images/travel.svg'} />
-          <MenuName>관광지</MenuName>
+          <MenuName>여행목록</MenuName>
         </IconWrapper>
         <IconWrapper>
           <MenuIcon src={'/images/person.svg'} />
           <MenuName>마이페이지</MenuName>
         </IconWrapper>
       </MenuWrapper>
+      <OutCircle>
+        <InCircle onClick={() => setIsAdd(true)}>
+          <AddTrip src={'/images/airplane-ticket.svg'} />
+        </InCircle>
+      </OutCircle>
     </BottomWrapper>
   );
 }
@@ -43,6 +53,7 @@ const IconWrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 8px;
+  cursor: pointer;
 `;
 const MenuIcon = styled.img`
   width: 28px;
@@ -57,4 +68,30 @@ const MenuName = styled.p`
   font-weight: 400;
   line-height: 14px; /* 107.692% */
   letter-spacing: -0.5px;
+`;
+const OutCircle = styled.div`
+  display: flex;
+  background-color: #a7a7a7;
+  width: 80px;
+  height: 80px;
+  border-radius: 50px;
+  position: absolute;
+  right: 10px;
+  bottom: 45px;
+`;
+const InCircle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  background-color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  cursor: pointer;
+`;
+const AddTrip = styled.img`
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
 `;

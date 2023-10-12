@@ -4,59 +4,39 @@ import styled from 'styled-components';
 import Bottom from '../../components/Home/Bottom';
 import AddTripComponent from '../../components/Bottom/AddTripComponent';
 import {useRecoilState} from 'recoil';
-import {isAddTripState} from '../../atoms/atom';
-export default function Home() {
+import {isAddTripState, selectedTravelItemState} from '../../atoms/atom';
+import {Link} from 'react-router-dom';
+
+export default function TravelList() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
+  const [tripItem, setTripItem] = useRecoilState(selectedTravelItemState);
+
+  // TripItem 데이터를 배열로 정의
+  const tripItems = [
+    {date: '2023.5.2 - 5.12', title: '도쿄 여행'},
+    {date: '2023.5.2 - 5.13', title: '서울 여행'},
+    {date: '2023.5.3 - 5.19', title: '중국 여행'},
+    {date: '2023.5.5 - 5.16', title: '미국 여행'},
+  ];
+
   return (
     <>
       {isAdd && <AddTripComponent />}
       <LogoWrapper>
-        <Logo title="Gachi" />
+        <Logo title="여행목록" />
       </LogoWrapper>
       <TripItemGallery>
         <TripItemWrapper>
-          <TripItem>
-            <NotYet.Wrapper>
-              <NotYet.Cloud src={'/images/cloud.png'} />
-              <NotYet.Plane src={'/images/plane.png'} />
-            </NotYet.Wrapper>
-            <NotYet.TextWrapper>
-              <NotYet.TextBold>아직 여행 계획이 없습니다</NotYet.TextBold>
-              <NotYet.TextRegular>
-                아래를 눌러 신나는 여행 계획을 세워주세요
-              </NotYet.TextRegular>
-            </NotYet.TextWrapper>
-            <NotYet.Split>
-              <NotYet.SplitWrapper>
-                <NotYet.Circle />
-                <NotYet.Line src={'/images/line.svg'} />
-                <NotYet.Circle />
-              </NotYet.SplitWrapper>
-            </NotYet.Split>
-            <NotYet.Button>여행 계획 세우기</NotYet.Button>
-          </TripItem>
-          <TripItem>
-            <Travel.Date>2023.5.2 - 5.12</Travel.Date>
-            <Travel.Title>도쿄 여행</Travel.Title>
-            <Travel.DDay>D-4</Travel.DDay>
-            <Travel.TodoBox>
-              <Travel.Todo>여행가서 할거 1</Travel.Todo>
-              <Travel.Todo>여행가서 할거 1</Travel.Todo>
-              <Travel.Todo>여행가서 할거 1</Travel.Todo>
-            </Travel.TodoBox>
-            <NotYet.Split>
-              <NotYet.SplitWrapper>
-                <NotYet.Circle />
-                <NotYet.Line src={'/images/line.svg'} />
-                <NotYet.Circle />
-              </NotYet.SplitWrapper>
-            </NotYet.Split>
-            <Travel.CloudBox>
-              <Travel.PayCloud>장부 클라우드</Travel.PayCloud>
-              <Travel.PhotoCloud>사진 클라우드</Travel.PhotoCloud>
-            </Travel.CloudBox>
-          </TripItem>
-          <TripItem></TripItem>
+          {tripItems.map((trip, index) => (
+            <TripItem
+              to={`/travel-list/${index + 1}`}
+              key={index}
+              onClick={() => setTripItem(trip)}
+            >
+              <Travel.Date>{trip.date}</Travel.Date>
+              <Travel.Title>{trip.title}</Travel.Title>
+            </TripItem>
+          ))}
         </TripItemWrapper>
       </TripItemGallery>
       <Bottom />
@@ -70,23 +50,24 @@ const LogoWrapper = styled.div`
 
 const TripItemGallery = styled.div`
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  height: 415px;
+  overflow: auto;
 `;
 const TripItemWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   gap: 20px;
-  transform: translate(-27%, 0%);
-  width: 216%;
 `;
-const TripItem = styled.div`
-  width: 270px;
-  height: 415px;
+const TripItem = styled(Link)`
+  width: 300px;
+  height: 100px;
   border-radius: 16px;
   background: #fff;
+  cursor: pointer;
   box-shadow: 0px 0px 21px 0px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
 `;
 
 const NotYet = {
