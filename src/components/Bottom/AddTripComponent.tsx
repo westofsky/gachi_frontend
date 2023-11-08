@@ -13,12 +13,12 @@ export default function AddTripComponent() {
   const [startDate, setStartDate] = useState('');
   const startDateChange = (date) => {
     const formattedDate = dayjs(date).format(datePickerFormat);
-    setStartDate((prev) => formattedDate);
+    setStartDate(() => formattedDate);
   };
   const [endDate, setEndDate] = useState('');
   const endDateChange = (date) => {
     const formattedDate = dayjs(date).format(datePickerFormat);
-    setEndDate((prev) => formattedDate);
+    setEndDate(() => formattedDate);
   };
   const modalRef = useRef(null);
   const modalOutClick = (e) => {

@@ -28,7 +28,7 @@ export default function Main() {
         </Form.Content>
       </Form.Wrapper>
       <LoginButtonWrapper onClick={handleLoginClick}>
-        <Button state={false} text="로그인하기" />
+        <Button state={false} text="로그인하기" size={0} />
       </LoginButtonWrapper>
       <RegisterButtonWrapper>
         <Menu onClick={handleRegisterClick}>회원가입</Menu>
