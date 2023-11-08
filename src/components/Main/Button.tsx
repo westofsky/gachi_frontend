@@ -5,14 +5,19 @@ import styled from 'styled-components';
 interface ButtonProps {
   state: boolean;
   text: string;
+  size: number;
 }
 
-export default function Button({state, text}: ButtonProps) {
-  return <LoginButton $state={state}>{text}</LoginButton>;
+export default function Button({state, text, size}: ButtonProps) {
+  return (
+    <LoginButton $state={state} $size={size}>
+      {text}
+    </LoginButton>
+  );
 }
 
-const LoginButton = styled.div<{$state: boolean}>`
-  width: 333px;
+const LoginButton = styled.div<{$state: boolean; $size: number}>`
+  width: ${(props) => `${props.$size}px`};
   margin: 0 auto;
   padding: 18px 16px;
   border-radius: 43px;

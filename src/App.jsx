@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import Main from './pages/Main/Main';
 import Register from './pages/Main/Register';
-import RegisterInfo from './pages/Main/RegisterInfo';
 import Home from './pages/Home/Home';
-import { RecoilRoot } from 'recoil';
+import {RecoilRoot} from 'recoil';
 import TravelList from './pages/Travel/TravelList';
 import TravelItem from './pages/Travel/TravelItem';
 function App() {
@@ -17,7 +16,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="/register" element={<Register />}></Route>
-            <Route path="/registerinfo" element={<RegisterInfo />}></Route>
             <Route path="/home" element={<Home />}></Route>
             <Route path="/travel-list" element={<TravelList />}></Route>
             <Route path="/travel-list/:travelNumber" element={<TravelItem />} />
