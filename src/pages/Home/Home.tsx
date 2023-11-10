@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
 import Bottom from '../../components/Home/Bottom';
@@ -6,13 +6,20 @@ import AddTripComponent from '../../components/Bottom/AddTripComponent';
 import {useRecoilState} from 'recoil';
 import {isAddTripState} from '../../atoms/atom';
 import TripCard from '../../components/Home/TripCard';
+import {AiFillBell} from 'react-icons/ai';
+import NotificationModal from '../../components/Home/NotificationModal';
 export default function Home() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
+  const [showNotice, setShowNotice] = useState(false);
   return (
     <>
       {isAdd && <AddTripComponent />}
+      {showNotice && <NotificationModal onClick={setShowNotice} />}
       <LogoWrapper>
         <Logo title="Gachi" />
+        <div className="alert" onClick={() => setShowNotice(true)}>
+          <AiFillBell size="24" />
+        </div>
       </LogoWrapper>
       <TripItemGallery>
         <TripItemWrapper>
@@ -33,6 +40,12 @@ export default function Home() {
 const LogoWrapper = styled.div`
   margin-top: 23px;
   margin-bottom: 40px;
+  padding: 0px 20px 0px 20px;
+  display: flex;
+  .alert {
+    margin-left: auto;
+    cursor: pointer;
+  }
 `;
 
 const TripItemGallery = styled.div`
