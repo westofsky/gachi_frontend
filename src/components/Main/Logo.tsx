@@ -6,8 +6,6 @@ export default function Logo({title}: {title: string}) {
 }
 
 const LogoWrapper = styled.div`
-  margin-top: 23px;
-  margin-left: 33px;
   color: #71c9ce;
   font-family: Pretendard-Bold;
   font-size: 24px;
