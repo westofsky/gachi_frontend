@@ -1,202 +1,236 @@
-import React from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
 import Bottom from '../../components/Home/Bottom';
-import AddTripComponent from '../../components/Bottom/AddTripComponent';
 import {useRecoilState} from 'recoil';
 import {isAddTripState, selectedTravelItemState} from '../../atoms/atom';
-import {Link} from 'react-router-dom';
+import {WiDirectionLeft} from 'react-icons/wi';
+import AddTripComponent from '../../components/Bottom/AddTripComponent';
+import InviteTripModal from '../../components/TripItem/InviteTrip/InviteTripModal';
+import shortid from 'https://cdn.skypack.dev/shortid@2.2.16';
 
+interface FileData {
+  id: string;
+  filename: string;
+  filetype: string;
+  fileimage: string;
+  datetime: string;
+}
 export default function TravelItem() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
+  const [isInvite, setIsInvite] = useState(false);
   const [tripItem, setTripItem] = useRecoilState(selectedTravelItemState);
+  const [Files, setFiles] = useState<FileData[]>([]);
+  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const files = Array.from(e.target.files);
+    const images: File[] = [];
+
+    files.forEach((file) => {
+      if (!file.name.match(/.(jpg|jpeg|png)$/i)) {
+        alert('jpg,jpeg,png만 넣어주세요.');
+        return;
+      }
+      images.push(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFiles((preValue) => [
+          ...preValue,
+          {
+            id: shortid.generate(),
+            filename: file.name,
+            filetype: file.type,
+            fileimage: reader.result as string,
+            datetime: file.lastModified.toLocaleString('ko-KR'),
+          },
+        ]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
   return (
     <>
       {isAdd && <AddTripComponent />}
+      {isInvite && <InviteTripModal onClick={setIsInvite} />}
       <LogoWrapper>
+        <GoToBefore>
+          <WiDirectionLeft color="#718fce" />
+        </GoToBefore>
         <Logo title={tripItem.title} />
+        <TripDate>2023.03.20 ~ 2023.03.29</TripDate>
+        <InviteTrip onClick={() => setIsInvite(true)}>+</InviteTrip>
       </LogoWrapper>
+      <Profile.Wrapper>
+        <Profile.Item src="/images/sample.png" />
+        <Profile.Item src="/images/sample.png" />
+        <Profile.Item src="/images/sample.png" />
+      </Profile.Wrapper>
+      <Image.Wrapper>
+        {Files.length > 0 ? (
+          <FileWrapper>
+            {Files.map((data, index) => {
+              const {id, filename, filetype, fileimage, datetime, filesize} =
+                data;
+              return (
+                <FileAtcBox key={index}>
+                  <FileImage>
+                    {' '}
+                    <FileImageImage src={fileimage} alt="" />
+                  </FileImage>
+                  {/* <FileDetail>{filename.substring(0, 4) + '...'}</FileDetail> */}
+                </FileAtcBox>
+              );
+            })}
+            <GetMine>내가 나온 사진 보기</GetMine>
+          </FileWrapper>
+        ) : (
+          <Image.EmptyImage>이미지가 없습니다.</Image.EmptyImage>
+        )}
+      </Image.Wrapper>
+      <Image.AddButton>
+        <FileUploadInput
+          type="file"
+          id="fileupload"
+          className="file-upload-input"
+          multiple
+          onChange={handleFileUpload}
+        />
+        이미지 추가
+      </Image.AddButton>
       <Bottom />
     </>
   );
 }
+const GoToBefore = styled.div`
+  font-size: 30px;
+  margin: auto;
+  margin-bottom: 0;
+  cursor: pointer;
+`;
 const LogoWrapper = styled.div`
-  margin-top: 23px;
-  margin-bottom: 40px;
+  width: 100%;
+  margin-top: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 4px;
+`;
+const TripDate = styled.div`
+  color: #8f8484;
+  margin: auto 0;
 `;
 
-const TripItemGallery = styled.div`
-  width: 100%;
-  height: 415px;
-  overflow: auto;
+const InviteTrip = styled.div`
+  margin: auto;
+  margin-bottom: 0;
+  color: #718fce;
+  font-size: 30px;
+  cursor: pointer;
 `;
-const TripItemWrapper = styled.div`
+
+const Profile = {
+  Wrapper: styled.div`
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    padding-left: 24px;
+  `,
+  Item: styled.img`
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+  `,
+};
+
+const Image = {
+  Wrapper: styled.div`
+    margin: 0 auto;
+    margin-top: 12px;
+    background: #cbf1f5;
+    width: 85%;
+    height: 50%;
+    border-radius: 20px;
+    overflow: auto;
+  `,
+  AddButton: styled.div`
+    margin: 0 auto;
+    margin-top: 24px;
+    width: 50%;
+    height: 48px;
+    background: #a6e3e9;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+  `,
+  EmptyImage: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  `,
+};
+
+const FileWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  padding: 15px;
+  padding-bottom: 100px;
+  position: relative;
+`;
+const FileUploadInput = styled.input`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+`;
+
+const FileAtcBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 70px;
+`;
+
+const FileImage = styled.div`
+  width: 70px;
+  height: 70px;
+  background-size: cover;
+  border-radius: 5px;
+  background-color: #eaecf1;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 20px;
+  font-size: 30px;
+  color: #475f7b;
 `;
-const TripItem = styled(Link)`
-  width: 300px;
-  height: 100px;
-  border-radius: 16px;
-  background: #fff;
+
+const FileImageImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+`;
+
+const GetMine = styled.div`
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  background: #7186ce;
+  color: white;
+  position: fixed;
+  bottom: 29%;
+  z-index: 1;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  box-shadow: 0px 0px 21px 0px rgba(0, 0, 0, 0.08);
-  text-decoration: none;
 `;
-
-const NotYet = {
-  Wrapper: styled.div`
-    height: 170px;
-    position: relative;
-  `,
-  Cloud: styled.img`
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0%);
-  `,
-  Plane: styled.img`
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    transform: translate(-2%, -23%);
-  `,
-  TextWrapper: styled.div`
-    height: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  `,
-  TextBold: styled.p`
-    color: #000;
-    font-family: Pretendard-Bold;
-    font-size: 20px;
-  `,
-  TextRegular: styled.p`
-    color: #000;
-    font-family: Pretendard-Regular;
-    font-size: 12px;
-  `,
-  Split: styled.div`
-    width: 100%;
-    overflow: hidden;
-  `,
-  SplitWrapper: styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 200%;
-    transform: translate(-25%, 0%);
-  `,
-  Circle: styled.div`
-    width: 28.893px;
-    height: 28.924px;
-    background: #f8f8f8;
-    border-radius: 15px;
-  `,
-  Line: styled.img`
-    width: 237.379px;
-    height: 3px;
-    flex-shrink: 0;
-    stroke-width: 2px;
-    stroke: #c0c0c0;
-  `,
-  Button: styled.div`
-    margin: 0 auto;
-    margin-top: 30px;
-    width: 150px;
-    padding: 8px 30px 8px 30px;
-    border-radius: 60px;
-    border: 1px solid #e4e4e4;
-    background: #efefef;
-    text-align: center;
-    cursor: pointer;
-  `,
-};
-
-const Travel = {
-  Date: styled.p`
-    color: #000;
-    margin: 24px 24px 12px 24px;
-    font-family: Pretendard-Regular;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px; /* 183.333% */
-    letter-spacing: -0.408px;
-  `,
-  Title: styled.p`
-    margin-left: 24px;
-    margin-bottom: 12px;
-    color: #000;
-    font-family: Pretendard-Bold;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 22px; /* 91.667% */
-    letter-spacing: -0.408px;
-  `,
-  DDay: styled.div`
-    margin-left: 24px;
-    display: inline-flex;
-    padding: 2px 8px;
-    align-items: flex-start;
-    gap: 8px;
-    border-radius: 12px;
-    border: 0.25px solid rgba(20, 34, 81, 0.06);
-    background: #b1b1b1;
-    color: white;
-  `,
-  TodoBox: styled.div`
-    width: 197px;
-    height: 125px;
-    padding: 12px;
-    margin: 0 auto;
-    margin-top: 24px;
-    flex-shrink: 0;
-    border-radius: 13px;
-    background: #ededed;
-    display: flex;
-    flex-direction: column;
-  `,
-  Todo: styled.p`
-    color: #000;
-    font-family: Pretendard;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px; /* 183.333% */
-    letter-spacing: -0.408px;
-  `,
-  CloudBox: styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  `,
-  PayCloud: styled.div`
-    display: inline-flex;
-    padding: 6px;
-    border-radius: 8px;
-    border: 1px solid #e4e4e4;
-    background: #efefef;
-    word-break: keep-all;
-    text-align: center;
-    cursor: pointer;
-  `,
-  PhotoCloud: styled.div`
-    display: inline-flex;
-    padding: 6px;
-    border-radius: 8px;
-    border: 1px solid #e4e4e4;
-    background: #efefef;
-    word-break: keep-all;
-    text-align: center;
-    cursor: pointer;
-  `,
-};
