@@ -3,12 +3,15 @@ import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
 import Bottom from '../../components/Home/Bottom';
 import {useRecoilState} from 'recoil';
-import {selectedTravelItemState} from '../../atoms/atom';
+import {isAddTripState, selectedTravelItemState} from '../../atoms/atom';
 import {WiDirectionLeft} from 'react-icons/wi';
+import AddTripComponent from '../../components/Bottom/AddTripComponent';
 export default function TravelItem() {
+  const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
   const [tripItem, setTripItem] = useRecoilState(selectedTravelItemState);
   return (
     <>
+      {isAdd && <AddTripComponent />}
       <LogoWrapper>
         <GoToBefore>
           <WiDirectionLeft color="#718fce" />
@@ -22,7 +25,9 @@ export default function TravelItem() {
         <Profile.Item src="/images/sample.png" />
         <Profile.Item src="/images/sample.png" />
       </Profile.Wrapper>
-      <Image.Wrapper></Image.Wrapper>
+      <Image.Wrapper>
+        <Image.EmptyImage>이미지가 없습니다.</Image.EmptyImage>
+      </Image.Wrapper>
       <Image.AddButton>이미지 추가</Image.AddButton>
       <Bottom />
     </>
@@ -88,5 +93,11 @@ const Image = {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+  `,
+  EmptyImage: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   `,
 };
