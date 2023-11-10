@@ -37,7 +37,7 @@ const BottomWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100px;
-  background: #a7a7a7;
+  background: #71c9ce;
   border-bottom-right-radius: 1.5rem;
   border-bottom-left-radius: 1.5rem;
 `;
@@ -71,7 +71,7 @@ const MenuName = styled.p`
 `;
 const OutCircle = styled.div`
   display: flex;
-  background-color: #a7a7a7;
+  background-color: #71c9ce;
   width: 80px;
   height: 80px;
   border-radius: 50px;
