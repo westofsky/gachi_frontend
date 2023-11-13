@@ -4,6 +4,7 @@ import styled, {css, keyframes} from 'styled-components';
 import Button from '../../components/Main/Button';
 import {useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
+import {postRegisterUser} from '../../api/Authentication';
 
 interface FormValue {
   email: string;
@@ -15,7 +16,7 @@ interface FormValue {
   face_image: string;
 }
 export default function Register() {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
   const {
     register,
     handleSubmit,
@@ -23,6 +24,7 @@ export default function Register() {
     getValues,
     watch,
   } = useForm<FormValue>({mode: 'onChange'});
+  const [profileImg, setProfileImg] = useState();
   const navigate = useNavigate();
   const handleNext = () => {
     if (inputFirstStep()) setCurrentStep(2);
@@ -30,9 +32,20 @@ export default function Register() {
   const handleBefore = () => {
     setCurrentStep(1);
   };
-  const registerUser = () => {
+  const registerUser = async () => {
     if (!inputFirstStep()) return;
-    console.log(getValues());
+    if (!inputSecondStep()) return;
+    if (!profileImg) return;
+    const sendData = new FormData();
+    sendData.append('email', getValues('email'));
+    sendData.append('password', getValues('password'));
+    sendData.append('password_again', getValues('passwordConfirm'));
+    sendData.append('gender', getValues('gender'));
+    sendData.append('birth', getValues('birth'));
+    sendData.append('name', getValues('name'));
+    sendData.append('face_image', profileImg);
+    const response = await postRegisterUser('signup', sendData);
+    console.log(response);
   };
   const inputFirstStep = () => {
     if (
@@ -54,6 +67,9 @@ export default function Register() {
       return true;
     }
     return false;
+  };
+  const saveFileImage = (e: any) => {
+    if (e.target.files) setProfileImg(e.target.files[0]);
   };
   return (
     <form onSubmit={handleSubmit(registerUser)}>
@@ -176,6 +192,17 @@ export default function Register() {
                   <Form.Error>{errors.birth.message}</Form.Error>
                 )}
               </Form.DateWrapper>
+            </Form.Content>
+            <Form.Content>
+              <Form.Title>프로필 사진</Form.Title>
+              <Form.Input
+                type="file"
+                accept="image/jpg, image/jpeg, image/png"
+                onChange={(event) => {
+                  saveFileImage(event);
+                }}
+              />
+              {errors.name && <Form.Error>{errors.name.message}</Form.Error>}
             </Form.Content>
             <ButtonWrapper>
               <LoginButtonWrapper onClick={handleBefore}>
