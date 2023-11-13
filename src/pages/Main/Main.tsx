@@ -28,7 +28,7 @@ export default function Main() {
         </Form.Content>
       </Form.Wrapper>
       <LoginButtonWrapper onClick={handleLoginClick}>
-        <Button state={false} text="로그인하기" size={0} />
+        <Button state={false} text="로그인하기" size={300} />
       </LoginButtonWrapper>
       <RegisterButtonWrapper>
         <Menu onClick={handleRegisterClick}>회원가입</Menu>
@@ -55,6 +55,7 @@ export default function Main() {
 const LogoWrapper = styled.div`
   margin-top: 23px;
   margin-bottom: 40px;
+  padding-left: 22px;
 `;
 const Title = styled.p`
   margin-left: 26px;

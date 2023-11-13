@@ -1,34 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {useRecoilState} from 'recoil';
 import {isAddTripState} from '../../atoms/atom';
 import {useNavigate} from 'react-router-dom';
+import AddFriendModal from '../Bottom/AddFriendModal';
 
 export default function Bottom() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
+  const [showFriend, setShowFriend] = useState(false);
   const navigate = useNavigate();
   return (
-    <BottomWrapper>
-      <MenuWrapper>
-        <IconWrapper onClick={() => navigate('/home')}>
-          <MenuIcon src={'/images/home.svg'} />
-          <MenuName>홈화면</MenuName>
-        </IconWrapper>
-        <IconWrapper onClick={() => navigate('/travel-list')}>
-          <MenuIcon src={'/images/travel.svg'} />
-          <MenuName>여행목록</MenuName>
-        </IconWrapper>
-        <IconWrapper>
-          <MenuIcon src={'/images/person.svg'} />
-          <MenuName>마이페이지</MenuName>
-        </IconWrapper>
-      </MenuWrapper>
-      <OutCircle>
-        <InCircle onClick={() => setIsAdd(true)}>
-          <AddTrip src={'/images/airplane-ticket.svg'} />
-        </InCircle>
-      </OutCircle>
-    </BottomWrapper>
+    <>
+      {showFriend && <AddFriendModal onClick={setShowFriend} />}
+      <BottomWrapper>
+        <MenuWrapper>
+          <IconWrapper onClick={() => navigate('/home')}>
+            <MenuIcon src={'/images/home.svg'} />
+            <MenuName>홈화면</MenuName>
+          </IconWrapper>
+          <IconWrapper onClick={() => setShowFriend(true)}>
+            <MenuIcon src={'/images/person.svg'} />
+            <MenuName>친구목록</MenuName>
+          </IconWrapper>
+          <IconWrapper>
+            <MenuIcon src={'/images/setting.svg'} />
+            <MenuName>마이페이지</MenuName>
+          </IconWrapper>
+        </MenuWrapper>
+        <OutCircle>
+          <InCircle onClick={() => setIsAdd(true)}>
+            <AddTrip src={'/images/airplane-ticket.svg'} />
+          </InCircle>
+        </OutCircle>
+      </BottomWrapper>
+    </>
   );
 }
 const BottomWrapper = styled.div`

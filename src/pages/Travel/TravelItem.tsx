@@ -8,6 +8,7 @@ import {WiDirectionLeft} from 'react-icons/wi';
 import AddTripComponent from '../../components/Bottom/AddTripComponent';
 import InviteTripModal from '../../components/TripItem/InviteTrip/InviteTripModal';
 import shortid from 'https://cdn.skypack.dev/shortid@2.2.16';
+import {useNavigate} from 'react-router-dom';
 
 interface FileData {
   id: string;
@@ -17,6 +18,7 @@ interface FileData {
   datetime: string;
 }
 export default function TravelItem() {
+  const navigate = useNavigate();
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
   const [isInvite, setIsInvite] = useState(false);
   const [tripItem, setTripItem] = useRecoilState(selectedTravelItemState);
@@ -54,7 +56,11 @@ export default function TravelItem() {
       {isAdd && <AddTripComponent />}
       {isInvite && <InviteTripModal onClick={setIsInvite} />}
       <LogoWrapper>
-        <GoToBefore>
+        <GoToBefore
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
           <WiDirectionLeft color="#718fce" />
         </GoToBefore>
         <Logo title={tripItem.title} />
@@ -63,8 +69,8 @@ export default function TravelItem() {
       </LogoWrapper>
       <Profile.Wrapper>
         <Profile.Item src="/images/sample.png" />
-        <Profile.Item src="/images/sample.png" />
-        <Profile.Item src="/images/sample.png" />
+        <Profile.Item src="/images/sample2.png" />
+        <Profile.Item src="/images/sample3.png" />
       </Profile.Wrapper>
       <Image.Wrapper>
         {Files.length > 0 ? (
@@ -222,7 +228,7 @@ const GetMine = styled.div`
   width: 150px;
   height: 40px;
   border-radius: 10px;
-  background: #7186ce;
+  background: #3e4c7a;
   color: white;
   position: fixed;
   bottom: 29%;

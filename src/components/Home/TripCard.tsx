@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import EmptyTripCard from './EmptyTripCard';
+import {useNavigate} from 'react-router-dom';
 interface TripCardProps {
   date: string;
   tripName: string;
@@ -8,6 +9,7 @@ interface TripCardProps {
   memos: string[];
 }
 export default function TripCard({date, tripName, dday, memos}: TripCardProps) {
+  const navigate = useNavigate();
   return (
     <>
       {!tripName ? (
@@ -31,7 +33,9 @@ export default function TripCard({date, tripName, dday, memos}: TripCardProps) {
           </NotYet.Split>
           <Travel.CloudBox>
             <Travel.EditMemo>메모 수정</Travel.EditMemo>
-            <Travel.PhotoCloud>사진 보기</Travel.PhotoCloud>
+            <Travel.PhotoCloud onClick={() => navigate('/travel-list')}>
+              사진 보기
+            </Travel.PhotoCloud>
           </Travel.CloudBox>
         </TripItem>
       )}

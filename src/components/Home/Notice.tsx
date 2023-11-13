@@ -55,6 +55,9 @@ const NoticeProfile = styled.img`
 
 const NoticeEmail = styled.div`
   margin-left: 10px;
+
+  word-break: break-all;
+  width: 158px;
 `;
 
 const ButtonWrapper = styled.div`

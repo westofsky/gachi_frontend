@@ -1,7 +1,8 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import styled from 'styled-components';
-import Notice from './Notice';
-export default function NotificationModal({onClick}: any) {
+import Friend from './Friend';
+import {GrAdd} from 'react-icons/gr';
+export default function AddFriendModal({onClick}: any) {
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (modalRef.current === e.target) {
@@ -19,31 +20,20 @@ export default function NotificationModal({onClick}: any) {
       }}
     >
       <ContentWrapper>
-        <AddTripTitle>알람 관리</AddTripTitle>
-        <NoticeListWrapper>
-          <Notice
-            src="/images/sample.png"
-            email="clcc001@naver.com"
-            type="friend"
-          />
-          <Notice
-            src="/images/sample2.png"
-            email="westofsky1591@gamil.com"
-            type="friend"
-          />
-          <Notice
-            src="/images/sample3.png"
-            email="linjgg99@naver.com"
-            type="friend"
-          />
-          <Notice
-            src="/images/sample4.png"
-            email="hongonh@naver.com"
-            type="invite"
-            inviteName="도쿄 여행"
-          />
-        </NoticeListWrapper>
-        <AddButton onClick={() => addTravel()}>알람 관리 완료</AddButton>
+        <AddTripTitle>친구 목록</AddTripTitle>
+        <FriendListWrapper>
+          <Friend src="/images/sample.png" email="clcc001@naver.com" />
+          <Friend src="/images/sample2.png" email="westofsky159@gmail.com" />
+          <Friend src="/images/sample3.png" email="limj99@naver.com" />
+          <Friend src="/images/sample4.png" email="hongildong@naver.com" />
+        </FriendListWrapper>
+        <AddFriendWrapper>
+          <AddFriendInput placeholder="친구 추가 할 이메일 입력하세요" />
+          <FriendAdd>
+            <GrAdd size="30" />
+          </FriendAdd>
+        </AddFriendWrapper>
+        <AddButton onClick={() => addTravel()}>확인</AddButton>
       </ContentWrapper>
     </Wrapper>
   );
@@ -82,13 +72,30 @@ const AddButton = styled.div`
   color: white;
   text-align: center;
   border-radius: 10px;
-  margin-top: auto;
   cursor: pointer;
 `;
 
-const NoticeListWrapper = styled.div`
+const FriendListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 100%;
+`;
+
+const AddFriendWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: 30px;
+`;
+
+const AddFriendInput = styled.input`
+  width: 80%;
+  height: 40px;
+`;
+const FriendAdd = styled.div`
+  margin-left: auto;
+  padding-right: 8px;
+  cursor: pointer;
 `;

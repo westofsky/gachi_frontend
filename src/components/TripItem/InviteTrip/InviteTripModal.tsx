@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import styled from 'styled-components';
 import Friend from './Friend';
-export default function InviteTripModal({onClick}) {
+export default function InviteTripModal({onClick}: any) {
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (modalRef.current === e.target) {
@@ -22,9 +22,9 @@ export default function InviteTripModal({onClick}) {
         <AddTripTitle>여행 초대</AddTripTitle>
         <FriendListWrapper>
           <Friend src="/images/sample.png" email="clcc001@naver.com" />
-          <Friend src="/images/sample.png" email="clcc001@naver.com" />
-          <Friend src="/images/sample.png" email="clcc001@naver.com" />
-          <Friend src="/images/sample.png" email="clcc001@naver.com" />
+          <Friend src="/images/sample2.png" email="westofsky159@gmail.com" />
+          <Friend src="/images/sample3.png" email="limj99@naver.com" />
+          <Friend src="/images/sample4.png" email="hongildong@naver.com" />
         </FriendListWrapper>
         <AddButton onClick={() => addTravel()}>여행 초대 완료</AddButton>
       </ContentWrapper>

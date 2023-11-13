@@ -72,6 +72,7 @@ const NotYet = {
   Split: styled.div`
     width: 100%;
     overflow: hidden;
+    margin-top: 62px;
   `,
   SplitWrapper: styled.div`
     display: flex;
