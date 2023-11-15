@@ -1,15 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
 import Button from '../../components/Main/Button';
 import {useNavigate} from 'react-router-dom';
+import {getLoginUser} from '../../api/Authentication';
 export default function Main() {
+  const [email, setEmail] = useState<string | undefined>();
+  const [password, setPassword] = useState<string | undefined>();
   const navigate = useNavigate();
   const handleRegisterClick = () => {
     navigate('/register');
   };
-  const handleLoginClick = () => {
-    navigate('/home');
+  const handleLoginClick = async () => {
+    if (!email || !password) {
+      alert('이메일 또는 비밀번호를 입력해주세요.');
+      return;
+    }
+    const response = await getLoginUser('login', email, password);
+    if (response.ok) {
+      alert('로그인 되었습니다.');
+      navigate('/home');
+    }
   };
   return (
     <>
@@ -20,11 +31,19 @@ export default function Main() {
       <Form.Wrapper>
         <Form.Content>
           <Form.Title>이메일 주소</Form.Title>
-          <Form.Input placeholder="예) gachi@gachi.com"></Form.Input>
+          <Form.Input
+            placeholder="예) gachi@gachi.com"
+            onChange={(e) => setEmail(e.target.value)}
+          ></Form.Input>
         </Form.Content>
         <Form.Content>
           <Form.Title>비밀번호</Form.Title>
-          <Form.Input type="password"></Form.Input>
+          <Form.Input
+            type="password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          ></Form.Input>
         </Form.Content>
       </Form.Wrapper>
       <LoginButtonWrapper onClick={handleLoginClick}>
