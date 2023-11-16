@@ -2,7 +2,9 @@ import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import Friend from './Friend';
 import {GrAdd} from 'react-icons/gr';
-import {getFriends} from '../../api/Friend';
+import {addFriend, getFriends} from '../../api/Friend';
+import {useRecoilValue} from 'recoil';
+import {userInfoState} from '../../atoms/atom';
 interface friendProps {
   id: number;
   user: string;
@@ -10,13 +12,27 @@ interface friendProps {
 }
 export default function AddFriendModal({onClick}: any) {
   const [friends, setFriends] = useState([]);
+  const [receiver, setReceiver] = useState('');
+  const userEmail = useRecoilValue(userInfoState);
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (modalRef.current === e.target) {
       onClick(false);
     }
   };
-  const addTravel = () => {
+  const addTravel = async () => {
+    if (!receiver) {
+      alert('추가할 이메일을 입력하세요');
+      return;
+    }
+    const response = await addFriend(userEmail.email, receiver);
+    if (response.ok) {
+      alert('친구추가 되었습니다.');
+    } else {
+      alert('잘못된 친구입니다.');
+    }
+  };
+  const closeModal = () => {
     onClick(false);
   };
   useEffect(() => {
@@ -44,12 +60,15 @@ export default function AddFriendModal({onClick}: any) {
           <Friend src="/images/sample4.png" email="hongildong@naver.com" /> */}
         </FriendListWrapper>
         <AddFriendWrapper>
-          <AddFriendInput placeholder="친구 추가 할 이메일 입력하세요" />
+          <AddFriendInput
+            placeholder="친구 추가 할 이메일 입력하세요"
+            onChange={(e) => setReceiver(e.target.value)}
+          />
           <FriendAdd>
-            <GrAdd size="30" />
+            <GrAdd size="30" onClick={() => addTravel()} />
           </FriendAdd>
         </AddFriendWrapper>
-        <AddButton onClick={() => addTravel()}>확인</AddButton>
+        <AddButton onClick={closeModal}>확인</AddButton>
       </ContentWrapper>
     </Wrapper>
   );
