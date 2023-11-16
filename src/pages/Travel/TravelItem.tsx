@@ -93,13 +93,10 @@ export default function TravelItem() {
   if (!tripInfo) {
     return <div>Loading...</div>;
   }
-
   return (
     <>
       {isAdd && <AddTripComponent />}
-      {isInvite && (
-        <InviteTripModal onClick={setIsInvite} tripNumber={travelNumber} />
-      )}
+      {isInvite && <InviteTripModal onClick={setIsInvite} />}
       <LogoWrapper>
         <GoToBefore
           onClick={() => {

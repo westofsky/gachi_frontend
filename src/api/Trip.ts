@@ -121,7 +121,7 @@ export const getTripInfo = async (id: string | undefined) => {
   }
 };
 export const inviteTrip = async (
-  trip: number,
+  trip: string | undefined,
   sender: string,
   receiver: string,
 ) => {
@@ -143,8 +143,9 @@ export const inviteTrip = async (
       },
     );
     const responseData = await response.json();
+    console.log(response);
     return responseData;
   } catch (error) {
-    throw new Error('여행 초대 수락 중 오류 발생');
+    throw new Error('여행 초대 중 오류 발생');
   }
 };

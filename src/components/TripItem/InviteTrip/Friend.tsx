@@ -5,19 +5,21 @@ import {getUserImage} from '../../../utils/getUserImage';
 import {userInfoState} from '../../../atoms/atom';
 import {useRecoilValue} from 'recoil';
 import {inviteTrip} from '../../../api/Trip';
+import {useParams} from 'react-router-dom';
 
 interface FriendInfoProps {
   src: string;
   email: string;
-  tripId: number;
 }
-export default function Friend({src, email, tripId}: FriendInfoProps) {
+export default function Friend({src, email}: FriendInfoProps) {
+  const {travelNumber} = useParams();
   const [userImage, setUserImage] = useState('');
   const userEmail = useRecoilValue(userInfoState);
   const handleInviteFriend = async () => {
     const userConfirm = confirm('여행에 초대하시겠습니까?');
     if (userConfirm) {
-      const response = await inviteTrip(tripId, userEmail.email, email);
+      const response = await inviteTrip(travelNumber, userEmail.email, email);
+      console.log(response);
       alert('초대했습니다.');
     }
   };

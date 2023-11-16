@@ -7,7 +7,7 @@ interface friendProps {
   user: string;
   friend: string;
 }
-export default function InviteTripModal({onClick}: any, tripNumber: number) {
+export default function InviteTripModal(onClick: any) {
   const [friends, setFriends] = useState([]);
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -40,7 +40,6 @@ export default function InviteTripModal({onClick}: any, tripNumber: number) {
               key={friend.friend}
               src={friend.friend}
               email={friend.friend}
-              tripId={tripNumber}
             />
           ))}
         </FriendListWrapper>
