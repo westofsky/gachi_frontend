@@ -15,9 +15,6 @@ export const refreshAccessToken = async (refresh: any) => {
   }
 };
 export const postRegisterUser = async (url: string, data: FormData) => {
-  for (let value of data.values()) {
-    console.log(value);
-  }
   try {
     const response = await fetch(
       import.meta.env.VITE_API_URL + 'authentication/' + url,

@@ -45,6 +45,10 @@ export default function Register() {
     sendData.append('name', getValues('name'));
     sendData.append('face_image', profileImg);
     const response = await postRegisterUser('signup/', sendData);
+    if (response) {
+      alert('회원가입 되었습니다.');
+      navigate('/');
+    }
   };
   const inputFirstStep = () => {
     if (
