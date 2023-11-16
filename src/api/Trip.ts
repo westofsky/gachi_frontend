@@ -102,3 +102,21 @@ export const processTripRequest = async (
     throw new Error('여행 초대 수락 중 오류 발생');
   }
 };
+export const getTripInfo = async (id: string | undefined) => {
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + 'trip/' + id + '/',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      },
+    );
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw new Error('여행 초대 수락 중 오류 발생');
+  }
+};

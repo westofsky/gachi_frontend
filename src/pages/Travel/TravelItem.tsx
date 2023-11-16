@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
 import Bottom from '../../components/Home/Bottom';
@@ -10,6 +10,8 @@ import InviteTripModal from '../../components/TripItem/InviteTrip/InviteTripModa
 import shortid from 'https://cdn.skypack.dev/shortid@2.2.16';
 import {useNavigate} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
+import {getTripInfo} from '../../api/Trip';
+import {getUserImage} from '../../utils/getUserImage';
 interface FileData {
   id: string;
   filename: string;
@@ -17,12 +19,27 @@ interface FileData {
   fileimage: string;
   datetime: string;
 }
+interface TripInfoProps {
+  id: number;
+  place: string;
+  departing_date: string;
+  arriving_date: string;
+  users: Array<string>;
+}
+interface InTripUserProps {
+  map(arg0: (user: any) => React.JSX.Element): React.ReactNode;
+  email: string;
+  imgSrc: string;
+}
 export default function TravelItem() {
   const navigate = useNavigate();
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
   const [isInvite, setIsInvite] = useState(false);
   const [tripItem, setTripItem] = useRecoilState(selectedTravelItemState);
   const [Files, setFiles] = useState<FileData[]>([]);
+  const {travelNumber} = useParams();
+  const [tripInfo, setTripInfo] = useState<TripInfoProps>();
+  const [inTripUser, setInTripUser] = useState<InTripUserProps>();
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
@@ -51,6 +68,32 @@ export default function TravelItem() {
       reader.readAsDataURL(file);
     });
   };
+  useEffect(() => {
+    const getTrip = async () => {
+      const response = await getTripInfo(travelNumber);
+      setTripInfo(response);
+      if (response && response.users) {
+        const userImages = await Promise.all(
+          response.users.map((user: string) => getUserImage(user)),
+        );
+
+        const inTripUsers = response.users.map(
+          (user: string, index: number) => ({
+            email: user,
+            imgSrc: userImages[index],
+          }),
+        );
+
+        setInTripUser(inTripUsers);
+      }
+    };
+    getTrip();
+  }, [travelNumber]);
+
+  if (!tripInfo) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       {isAdd && <AddTripComponent />}
@@ -63,14 +106,15 @@ export default function TravelItem() {
         >
           <WiDirectionLeft color="#718fce" />
         </GoToBefore>
-        <Logo title={tripItem.title} />
-        <TripDate>2023.03.20 ~ 2023.03.29</TripDate>
+        <Logo title={tripInfo.place} />
+        <TripDate>{`${tripInfo.departing_date} ~ ${tripInfo.arriving_date}`}</TripDate>
         <InviteTrip onClick={() => setIsInvite(true)}>+</InviteTrip>
       </LogoWrapper>
       <Profile.Wrapper>
-        <Profile.Item src="/images/sample.png" />
-        <Profile.Item src="/images/sample2.png" />
-        <Profile.Item src="/images/sample3.png" />
+        {inTripUser &&
+          inTripUser.map((user) => (
+            <Profile.Item key={user.email} src={user.imgSrc} />
+          ))}
       </Profile.Wrapper>
       <Image.Wrapper>
         {Files.length > 0 ? (

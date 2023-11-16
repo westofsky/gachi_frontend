@@ -53,7 +53,11 @@ export default function AddFriendModal({onClick}: any) {
         <AddTripTitle>친구 목록</AddTripTitle>
         <FriendListWrapper>
           {friends.map((friend: friendProps) => (
-            <Friend src={friend.friend} email={friend.friend} />
+            <Friend
+              key={friend.friend}
+              src={friend.friend}
+              email={friend.friend}
+            />
           ))}
           {/* <Friend src="/images/sample2.png" email="westofsky159@gmail.com" />
           <Friend src="/images/sample3.png" email="limj99@naver.com" />
