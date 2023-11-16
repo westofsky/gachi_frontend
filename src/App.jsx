@@ -19,30 +19,15 @@ function App() {
             <Route path="/register" element={<Register />}></Route>
             <Route
               path="/home"
-              element={
-                <PrivateRoute
-                  component={<Home />}
-                  authenticated={localStorage.getItem('access')}
-                />
-              }
+              element={<PrivateRoute component={<Home />} />}
             />
             <Route
               path="/travel-list"
-              element={
-                <PrivateRoute
-                  component={<TravelList />}
-                  authenticated={localStorage.getItem('access')}
-                />
-              }
+              element={<PrivateRoute component={<TravelList />} />}
             />
             <Route
               path="/travel-list/:travelNumber"
-              element={
-                <PrivateRoute
-                  component={<TravelItem />}
-                  authenticated={localStorage.getItem('access')}
-                />
-              }
+              element={<PrivateRoute component={<TravelItem />} />}
             />
           </Routes>
         </BrowserRouter>
