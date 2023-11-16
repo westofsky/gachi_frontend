@@ -25,19 +25,20 @@ export default function Notice({
   const handleAccept = async () => {
     if (type === 'friend') {
       const response = await processFriendRequest(id, 'accept');
-      alert(response);
+      alert(response.message);
     } else {
       const response = await processTripRequest(id, 'accept');
-      alert(response);
+      alert(response.message);
     }
   };
   const handleReject = async () => {
     if (type === 'friend') {
       const response = await processFriendRequest(id, 'reject');
-      alert(response);
+      alert(response.message);
     } else {
       const response = await processTripRequest(id, 'reject');
-      alert(response);
+      console.log(response);
+      alert(response.message);
     }
   };
   useEffect(() => {

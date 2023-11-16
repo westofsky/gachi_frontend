@@ -29,13 +29,12 @@ export default function NotificationModal({onClick}: any) {
   useEffect(() => {
     const fetchNotice = async () => {
       const responseFriend = await getFriendRequest();
-      console.log(responseFriend);
       setNoticeFriend(responseFriend);
       const responseTrip = await getTripRequest();
       setNoticeTrip(responseTrip);
     };
     fetchNotice();
-  }, [modalRef]);
+  }, [noticeFriend, noticeTrip]);
   return (
     <Wrapper
       ref={modalRef}
