@@ -1,23 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {styled} from 'styled-components';
 import {GrAdd} from 'react-icons/gr';
+import {getUserImage} from '../../utils/getUserImage';
 
 interface NoticeInfoProps {
   src: string;
   email: string;
   type: string;
   inviteName?: string;
+  id: number;
+  tripId?: number;
 }
 export default function Notice({
   src,
   email,
   type,
   inviteName,
+  id,
+  tripId,
 }: NoticeInfoProps) {
+  const [userImage, setUserImage] = useState();
+  useEffect(() => {
+    const getImage = async () => {
+      const imageSrc = await getUserImage(src);
+      setUserImage(imageSrc);
+    };
+    getImage();
+  }, [src]);
   return (
     <NoticeWrapper>
       <NoticeInfo>
-        <NoticeProfile src={src} />
+        <NoticeProfile src={userImage} />
         <NoticeEmail>
           {email}으로부터
           {type === 'friend'

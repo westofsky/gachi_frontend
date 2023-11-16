@@ -1,16 +1,25 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {styled} from 'styled-components';
 import {GrAdd} from 'react-icons/gr';
+import {getUserImage} from '../../utils/getUserImage';
 
 interface FriendInfoProps {
   src: string;
   email: string;
 }
 export default function Friend({src, email}: FriendInfoProps) {
+  const [userImage, setUserImage] = useState();
+  useEffect(() => {
+    const getImage = async () => {
+      const imageSrc = await getUserImage(src);
+      setUserImage(imageSrc);
+    };
+    getImage();
+  }, [src]);
   return (
     <FriendWrapper>
       <FriendInfo>
-        <FriendProfile />
+        <FriendProfile src={userImage} />
         <FriendEmail>{email}</FriendEmail>
       </FriendInfo>
     </FriendWrapper>

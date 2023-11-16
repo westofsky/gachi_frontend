@@ -1,7 +1,22 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import Notice from './Notice';
+import {getFriendRequest} from '../../api/Friend';
+import {getTripRequest} from '../../api/Trip';
+interface friendProps {
+  id: number;
+  sender: string;
+  receiver: string;
+}
+interface tripProps {
+  id: number;
+  trip: number;
+  sender: string;
+  receiver: string;
+}
 export default function NotificationModal({onClick}: any) {
+  const [noticeFriend, setNoticeFriend] = useState([]);
+  const [noticeTrip, setNoticeTrip] = useState([]);
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (modalRef.current === e.target) {
@@ -11,6 +26,15 @@ export default function NotificationModal({onClick}: any) {
   const addTravel = () => {
     onClick(false);
   };
+  useEffect(() => {
+    const fetchNotice = async () => {
+      const responseFriend = await getFriendRequest();
+      setNoticeFriend(responseFriend);
+      const responseTrip = await getTripRequest();
+      setNoticeTrip(responseTrip);
+    };
+    fetchNotice();
+  }, [modalRef]);
   return (
     <Wrapper
       ref={modalRef}
@@ -21,12 +45,24 @@ export default function NotificationModal({onClick}: any) {
       <ContentWrapper>
         <AddTripTitle>알람 관리</AddTripTitle>
         <NoticeListWrapper>
-          <Notice
-            src="/images/sample.png"
-            email="clcc001@naver.com"
-            type="friend"
-          />
-          <Notice
+          {noticeFriend.map((friend: friendProps) => (
+            <Notice
+              src={friend.sender}
+              id={friend.id}
+              email={friend.sender}
+              type="friend"
+            />
+          ))}
+          {noticeTrip.map((tripItem: tripProps) => (
+            <Notice
+              src={tripItem.sender}
+              id={tripItem.id}
+              tripId={tripItem.trip}
+              email={tripItem.sender}
+              type="invite"
+            />
+          ))}
+          {/* <Notice
             src="/images/sample2.png"
             email="westofsky1591@gamil.com"
             type="friend"
@@ -35,13 +71,13 @@ export default function NotificationModal({onClick}: any) {
             src="/images/sample3.png"
             email="linjgg99@naver.com"
             type="friend"
-          />
-          <Notice
+          /> */}
+          {/* <Notice
             src="/images/sample4.png"
             email="hongonh@naver.com"
             type="invite"
             inviteName="도쿄 여행"
-          />
+          /> */}
         </NoticeListWrapper>
         <AddButton onClick={() => addTravel()}>알람 관리 완료</AddButton>
       </ContentWrapper>
