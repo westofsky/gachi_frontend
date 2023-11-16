@@ -59,9 +59,6 @@ export default function AddFriendModal({onClick}: any) {
               email={friend.friend}
             />
           ))}
-          {/* <Friend src="/images/sample2.png" email="westofsky159@gmail.com" />
-          <Friend src="/images/sample3.png" email="limj99@naver.com" />
-          <Friend src="/images/sample4.png" email="hongildong@naver.com" /> */}
         </FriendListWrapper>
         <AddFriendWrapper>
           <AddFriendInput

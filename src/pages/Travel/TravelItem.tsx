@@ -97,7 +97,9 @@ export default function TravelItem() {
   return (
     <>
       {isAdd && <AddTripComponent />}
-      {isInvite && <InviteTripModal onClick={setIsInvite} />}
+      {isInvite && (
+        <InviteTripModal onClick={setIsInvite} tripNumber={travelNumber} />
+      )}
       <LogoWrapper>
         <GoToBefore
           onClick={() => {

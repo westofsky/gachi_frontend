@@ -1,7 +1,14 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import Friend from './Friend';
-export default function InviteTripModal({onClick}: any) {
+import {getFriends} from '../../../api/Friend';
+interface friendProps {
+  id: number;
+  user: string;
+  friend: string;
+}
+export default function InviteTripModal({onClick}: any, tripNumber: number) {
+  const [friends, setFriends] = useState([]);
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (modalRef.current === e.target) {
@@ -11,6 +18,13 @@ export default function InviteTripModal({onClick}: any) {
   const addTravel = () => {
     onClick(false);
   };
+  useEffect(() => {
+    const fetchFriend = async () => {
+      const response = await getFriends();
+      setFriends(response);
+    };
+    fetchFriend();
+  }, []);
   return (
     <Wrapper
       ref={modalRef}
@@ -21,10 +35,14 @@ export default function InviteTripModal({onClick}: any) {
       <ContentWrapper>
         <AddTripTitle>여행 초대</AddTripTitle>
         <FriendListWrapper>
-          <Friend src="/images/sample.png" email="clcc001@naver.com" />
-          <Friend src="/images/sample2.png" email="westofsky159@gmail.com" />
-          <Friend src="/images/sample3.png" email="limj99@naver.com" />
-          <Friend src="/images/sample4.png" email="hongildong@naver.com" />
+          {friends.map((friend: friendProps) => (
+            <Friend
+              key={friend.friend}
+              src={friend.friend}
+              email={friend.friend}
+              tripId={tripNumber}
+            />
+          ))}
         </FriendListWrapper>
         <AddButton onClick={() => addTravel()}>여행 초대 완료</AddButton>
       </ContentWrapper>

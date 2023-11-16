@@ -120,3 +120,31 @@ export const getTripInfo = async (id: string | undefined) => {
     throw new Error('여행 초대 수락 중 오류 발생');
   }
 };
+export const inviteTrip = async (
+  trip: number,
+  sender: string,
+  receiver: string,
+) => {
+  const data = {
+    trip: trip,
+    sender: sender,
+    receiver: receiver,
+  };
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + 'trip/invite/',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+        body: JSON.stringify(data),
+      },
+    );
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw new Error('여행 초대 수락 중 오류 발생');
+  }
+};

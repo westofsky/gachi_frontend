@@ -1,19 +1,40 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {styled} from 'styled-components';
 import {GrAdd} from 'react-icons/gr';
+import {getUserImage} from '../../../utils/getUserImage';
+import {userInfoState} from '../../../atoms/atom';
+import {useRecoilValue} from 'recoil';
+import {inviteTrip} from '../../../api/Trip';
 
 interface FriendInfoProps {
   src: string;
   email: string;
+  tripId: number;
 }
-export default function Friend({src, email}: FriendInfoProps) {
+export default function Friend({src, email, tripId}: FriendInfoProps) {
+  const [userImage, setUserImage] = useState('');
+  const userEmail = useRecoilValue(userInfoState);
+  const handleInviteFriend = async () => {
+    const userConfirm = confirm('여행에 초대하시겠습니까?');
+    if (userConfirm) {
+      const response = await inviteTrip(tripId, userEmail.email, email);
+      alert('초대했습니다.');
+    }
+  };
+  useEffect(() => {
+    const getImage = async () => {
+      const imageSrc = await getUserImage(src);
+      setUserImage(imageSrc);
+    };
+    getImage();
+  }, [src]);
   return (
     <FriendWrapper>
       <FriendInfo>
-        <FriendProfile src={src} />
+        <FriendProfile src={userImage} />
         <FriendEmail>{email}</FriendEmail>
         <FriendAdd>
-          <GrAdd size="30" />
+          <GrAdd size="30" onClick={handleInviteFriend} />
         </FriendAdd>
       </FriendInfo>
     </FriendWrapper>

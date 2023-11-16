@@ -12,7 +12,6 @@ export default function Friend({src, email}: FriendInfoProps) {
   useEffect(() => {
     const getImage = async () => {
       const imageSrc = await getUserImage(src);
-      console.log(imageSrc);
       setUserImage(imageSrc);
     };
     getImage();
