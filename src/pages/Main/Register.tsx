@@ -44,8 +44,7 @@ export default function Register() {
     sendData.append('birth', getValues('birth'));
     sendData.append('name', getValues('name'));
     sendData.append('face_image', profileImg);
-    const response = await postRegisterUser('signup', sendData);
-    console.log(response);
+    const response = await postRegisterUser('signup/', sendData);
   };
   const inputFirstStep = () => {
     if (
@@ -72,7 +71,7 @@ export default function Register() {
     if (e.target.files) setProfileImg(e.target.files[0]);
   };
   return (
-    <form onSubmit={handleSubmit(registerUser)}>
+    <form onSubmit={handleSubmit(registerUser)} method="POST">
       <RegisterWrapper $currentstep={currentStep}>
         <LogoWrapper>
           <Logo title={''} />

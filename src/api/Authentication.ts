@@ -1,9 +1,6 @@
 export const refreshAccessToken = async (refresh: any) => {
-  const data = {
-    refresh: refresh,
-  };
   const response = await fetch(
-    import.meta.env.VITE_API_URL + 'authentication/token/refresh',
+    import.meta.env.VITE_API_URL + 'authentication/token/refresh/',
     {
       method: 'POST',
       headers: {
@@ -18,18 +15,19 @@ export const refreshAccessToken = async (refresh: any) => {
   }
 };
 export const postRegisterUser = async (url: string, data: FormData) => {
+  for (let value of data.values()) {
+    console.log(value);
+  }
   try {
     const response = await fetch(
       import.meta.env.VITE_API_URL + 'authentication/' + url,
       {
         method: 'POST',
-        headers: {
-          'Content-type': 'multipart/form-data',
-        },
+        body: data,
       },
     );
-    console.log(response);
-    return response;
+    const responsedData = await response.json();
+    return responsedData;
   } catch (error) {
     throw new Error('회원가입 오류');
   }
@@ -55,9 +53,9 @@ export const getLoginUser = async (
         body: JSON.stringify(data),
       },
     );
-    console.log(response);
     return response;
   } catch (error) {
+    console.log(error);
     throw new Error('로그인 오류');
   }
 };

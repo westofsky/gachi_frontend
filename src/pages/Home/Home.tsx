@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
 import Bottom from '../../components/Home/Bottom';
@@ -8,9 +8,17 @@ import {isAddTripState} from '../../atoms/atom';
 import TripCard from '../../components/Home/TripCard';
 import {AiFillBell} from 'react-icons/ai';
 import NotificationModal from '../../components/Home/NotificationModal';
+import {getUserTrip} from '../../api/Trip';
 export default function Home() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
   const [showNotice, setShowNotice] = useState(false);
+  useEffect(() => {
+    const fetchTrip = async () => {
+      const response = await getUserTrip();
+      console.log(response);
+    };
+    fetchTrip();
+  }, []);
   return (
     <>
       {isAdd && <AddTripComponent />}

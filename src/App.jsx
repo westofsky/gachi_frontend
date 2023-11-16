@@ -7,6 +7,7 @@ import Home from './pages/Home/Home';
 import {RecoilRoot} from 'recoil';
 import TravelList from './pages/Travel/TravelList';
 import TravelItem from './pages/Travel/TravelItem';
+import {PrivateRoute} from './utils/PrivateRoute';
 function App() {
   return (
     <RecoilRoot>
@@ -16,9 +17,33 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="/register" element={<Register />}></Route>
-            <Route path="/home" element={<Home />}></Route>
-            <Route path="/travel-list" element={<TravelList />}></Route>
-            <Route path="/travel-list/:travelNumber" element={<TravelItem />} />
+            <Route
+              path="/home"
+              element={
+                <PrivateRoute
+                  component={<Home />}
+                  authenticated={localStorage.getItem('access')}
+                />
+              }
+            />
+            <Route
+              path="/travel-list"
+              element={
+                <PrivateRoute
+                  component={<TravelList />}
+                  authenticated={localStorage.getItem('access')}
+                />
+              }
+            />
+            <Route
+              path="/travel-list/:travelNumber"
+              element={
+                <PrivateRoute
+                  component={<TravelItem />}
+                  authenticated={localStorage.getItem('access')}
+                />
+              }
+            />
           </Routes>
         </BrowserRouter>
       </Phone.Layout>
