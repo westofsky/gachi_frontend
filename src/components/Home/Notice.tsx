@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {styled} from 'styled-components';
 import {GrAdd} from 'react-icons/gr';
 import {getUserImage} from '../../utils/getUserImage';
+import {processFriendRequest} from '../../api/Friend';
+import {processTripRequest} from '../../api/Trip';
 
 interface NoticeInfoProps {
   src: string;
@@ -20,6 +22,24 @@ export default function Notice({
   tripId,
 }: NoticeInfoProps) {
   const [userImage, setUserImage] = useState();
+  const handleAccept = async () => {
+    if (type === 'friend') {
+      const response = await processFriendRequest(id, 'accept');
+      alert(response);
+    } else {
+      const response = await processTripRequest(id, 'accept');
+      alert(response);
+    }
+  };
+  const handleReject = async () => {
+    if (type === 'friend') {
+      const response = await processFriendRequest(id, 'reject');
+      alert(response);
+    } else {
+      const response = await processTripRequest(id, 'reject');
+      alert(response);
+    }
+  };
   useEffect(() => {
     const getImage = async () => {
       const imageSrc = await getUserImage(src);
@@ -39,8 +59,8 @@ export default function Notice({
             : ` ${inviteName} 초대 받았습니다.`}
         </NoticeEmail>
         <ButtonWrapper>
-          <Accept>수락</Accept>
-          <Reject>거절</Reject>
+          <Accept onClick={handleAccept}>수락</Accept>
+          <Reject onClick={handleReject}>거절</Reject>
         </ButtonWrapper>
       </NoticeInfo>
     </NoticeWrapper>

@@ -77,3 +77,25 @@ export const getTripRequest = async () => {
     throw new Error('여행 요청 가져오기 중 오류 발생');
   }
 };
+export const processTripRequest = async (id: number, action: string) => {
+  const data = {
+    action: action,
+  };
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + 'trip/invite/' + id + '/',
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+        body: JSON.stringify(data),
+      },
+    );
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw new Error('여행 초대 수락 중 오류 발생');
+  }
+};
