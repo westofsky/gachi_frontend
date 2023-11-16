@@ -18,7 +18,7 @@ export default function Home() {
       console.log(response);
     };
     fetchTrip();
-  }, []);
+  }, [isAdd]);
   return (
     <>
       {isAdd && <AddTripComponent />}

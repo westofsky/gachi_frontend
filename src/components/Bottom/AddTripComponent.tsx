@@ -7,26 +7,41 @@ import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import {useRecoilState} from 'recoil';
 import {isAddTripState} from '../../atoms/atom';
+import {addTrip} from '../../api/Trip';
 export default function AddTripComponent() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
+  const [place, setPlace] = useState('');
   const datePickerFormat = 'YYYY-MM-DD';
   const [startDate, setStartDate] = useState('');
-  const startDateChange = (date) => {
+  const startDateChange = (
+    date: string | number | Date | dayjs.Dayjs | null | undefined,
+  ) => {
     const formattedDate = dayjs(date).format(datePickerFormat);
     setStartDate(() => formattedDate);
   };
   const [endDate, setEndDate] = useState('');
-  const endDateChange = (date) => {
+  const endDateChange = (
+    date: string | number | Date | dayjs.Dayjs | null | undefined,
+  ) => {
     const formattedDate = dayjs(date).format(datePickerFormat);
     setEndDate(() => formattedDate);
   };
   const modalRef = useRef(null);
-  const modalOutClick = (e) => {
+  const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (modalRef.current === e.target) {
       setIsAdd(false);
     }
   };
-  const addTravel = () => {
+  const addTravel = async () => {
+    if (!startDate || !endDate) {
+      alert('날짜를 선택해주세요');
+      return;
+    } else if (!place) {
+      alert('장소를 입력해주세요');
+      return;
+    }
+    const response = await addTrip(place, startDate, endDate);
+    alert('여행이 추가되었습니다.');
     setIsAdd(false);
   };
   return (
@@ -81,7 +96,10 @@ export default function AddTripComponent() {
           </DateSelectBox>
           <DateSelectBox>
             <DateSelectName>장소</DateSelectName>
-            <LocationInput placeholder="여행지를 입력해주세요" />
+            <LocationInput
+              placeholder="여행지를 입력해주세요"
+              onChange={(e) => setPlace(e.target.value)}
+            />
           </DateSelectBox>
         </DatePick>
         <AddButton onClick={() => addTravel()}>여행 추가 완료</AddButton>
