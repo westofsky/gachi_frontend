@@ -7,8 +7,15 @@ interface TripCardProps {
   tripName: string;
   dday: string;
   memos: string[];
+  id: number;
 }
-export default function TripCard({date, tripName, dday, memos}: TripCardProps) {
+export default function TripCard({
+  date,
+  tripName,
+  dday,
+  memos,
+  id,
+}: TripCardProps) {
   const navigate = useNavigate();
   return (
     <>
@@ -33,7 +40,7 @@ export default function TripCard({date, tripName, dday, memos}: TripCardProps) {
           </NotYet.Split>
           <Travel.CloudBox>
             <Travel.EditMemo>메모 수정</Travel.EditMemo>
-            <Travel.PhotoCloud onClick={() => navigate('/travel-list')}>
+            <Travel.PhotoCloud onClick={() => navigate('/travel-list/' + id)}>
               사진 보기
             </Travel.PhotoCloud>
           </Travel.CloudBox>

@@ -9,7 +9,7 @@ import AddTripComponent from '../../components/Bottom/AddTripComponent';
 import InviteTripModal from '../../components/TripItem/InviteTrip/InviteTripModal';
 import shortid from 'https://cdn.skypack.dev/shortid@2.2.16';
 import {useNavigate} from 'react-router-dom';
-
+import {useParams} from 'react-router-dom';
 interface FileData {
   id: string;
   filename: string;

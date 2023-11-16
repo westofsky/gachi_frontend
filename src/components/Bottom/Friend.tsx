@@ -8,7 +8,7 @@ interface FriendInfoProps {
   email: string;
 }
 export default function Friend({src, email}: FriendInfoProps) {
-  const [userImage, setUserImage] = useState();
+  const [userImage, setUserImage] = useState('');
   useEffect(() => {
     const getImage = async () => {
       const imageSrc = await getUserImage(src);

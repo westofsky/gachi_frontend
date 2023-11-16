@@ -60,6 +60,7 @@ export default function Home() {
               {trips.map((item: tripProps) => (
                 <TripCard
                   key={item.id}
+                  id={item.id}
                   date={`${item.departing_date}-${item.arriving_date}`}
                   tripName={item.place}
                   dday={getDDay(item.departing_date)}

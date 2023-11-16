@@ -77,7 +77,10 @@ export const getTripRequest = async () => {
     throw new Error('여행 요청 가져오기 중 오류 발생');
   }
 };
-export const processTripRequest = async (id: number, action: string) => {
+export const processTripRequest = async (
+  id: number | undefined,
+  action: string,
+) => {
   const data = {
     action: action,
   };

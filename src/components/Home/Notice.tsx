@@ -1,50 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {styled} from 'styled-components';
-import {GrAdd} from 'react-icons/gr';
 import {getUserImage} from '../../utils/getUserImage';
-import {processFriendRequest} from '../../api/Friend';
-import {processTripRequest} from '../../api/Trip';
 
 interface NoticeInfoProps {
   src: string;
   email: string;
   type: string;
   inviteName?: string;
-  id: number;
-  tripId?: number;
+  onAccept: () => Promise<void>;
+  onReject: () => Promise<void>;
 }
 export default function Notice({
   src,
   email,
   type,
   inviteName,
-  id,
-  tripId,
+  onAccept,
+  onReject,
 }: NoticeInfoProps) {
-  const [userImage, setUserImage] = useState();
-  const handleAccept = async () => {
-    if (type === 'friend') {
-      const response = await processFriendRequest(id, 'accept');
-      alert(response.message);
-    } else {
-      const response = await processTripRequest(id, 'accept');
-      alert(response.message);
-    }
-  };
-  const handleReject = async () => {
-    if (type === 'friend') {
-      const response = await processFriendRequest(id, 'reject');
-      alert(response.message);
-    } else {
-      const response = await processTripRequest(id, 'reject');
-      console.log(response);
-      alert(response.message);
-    }
-  };
+  const [userImage, setUserImage] = useState('');
+
   useEffect(() => {
     const getImage = async () => {
       const imageSrc = await getUserImage(src);
-      console.log(imageSrc);
       setUserImage(imageSrc);
     };
     getImage();
@@ -60,8 +38,8 @@ export default function Notice({
             : ` ${inviteName} 초대 받았습니다.`}
         </NoticeEmail>
         <ButtonWrapper>
-          <Accept onClick={handleAccept}>수락</Accept>
-          <Reject onClick={handleReject}>거절</Reject>
+          <Accept onClick={() => onAccept()}>수락</Accept>
+          <Reject onClick={() => onReject()}>거절</Reject>
         </ButtonWrapper>
       </NoticeInfo>
     </NoticeWrapper>

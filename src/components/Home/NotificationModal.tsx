@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Notice from './Notice';
 import {getFriendRequest} from '../../api/Friend';
 import {getTripRequest} from '../../api/Trip';
+import {processFriendRequest} from '../../api/Friend';
+import {processTripRequest} from '../../api/Trip';
 interface friendProps {
   id: number;
   sender: string;
@@ -17,6 +19,7 @@ interface tripProps {
 export default function NotificationModal({onClick}: any) {
   const [noticeFriend, setNoticeFriend] = useState([]);
   const [noticeTrip, setNoticeTrip] = useState([]);
+  const [reload, setReload] = useState(false);
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (modalRef.current === e.target) {
@@ -26,6 +29,26 @@ export default function NotificationModal({onClick}: any) {
   const addTravel = () => {
     onClick(false);
   };
+  const handleAccept = async (type: string, id: number) => {
+    if (type === 'friend') {
+      const response = await processFriendRequest(id, 'accept');
+      alert(response.message);
+    } else {
+      const response = await processTripRequest(id, 'accept');
+      alert(response.message);
+    }
+    setReload(!reload);
+  };
+  const handleReject = async (type: string, id: number) => {
+    if (type === 'friend') {
+      const response = await processFriendRequest(id, 'reject');
+      alert(response.message);
+    } else {
+      const response = await processTripRequest(id, 'reject');
+      alert(response.message);
+    }
+    setReload(!reload);
+  };
   useEffect(() => {
     const fetchNotice = async () => {
       const responseFriend = await getFriendRequest();
@@ -34,7 +57,7 @@ export default function NotificationModal({onClick}: any) {
       setNoticeTrip(responseTrip);
     };
     fetchNotice();
-  }, [noticeFriend, noticeTrip]);
+  }, [reload]);
   return (
     <Wrapper
       ref={modalRef}
@@ -49,37 +72,22 @@ export default function NotificationModal({onClick}: any) {
             <Notice
               key={friend.id}
               src={friend.sender}
-              id={friend.id}
               email={friend.sender}
               type="friend"
+              onAccept={() => handleAccept('friend', friend.id)}
+              onReject={() => handleReject('friend', friend.id)}
             />
           ))}
           {noticeTrip.map((tripItem: tripProps) => (
             <Notice
               key={tripItem.id}
               src={tripItem.sender}
-              id={tripItem.id}
-              tripId={tripItem.trip}
               email={tripItem.sender}
               type="invite"
+              onAccept={() => handleAccept('invite', tripItem.id)}
+              onReject={() => handleReject('invite', tripItem.id)}
             />
           ))}
-          {/* <Notice
-            src="/images/sample2.png"
-            email="westofsky1591@gamil.com"
-            type="friend"
-          />
-          <Notice
-            src="/images/sample3.png"
-            email="linjgg99@naver.com"
-            type="friend"
-          /> */}
-          {/* <Notice
-            src="/images/sample4.png"
-            email="hongonh@naver.com"
-            type="invite"
-            inviteName="도쿄 여행"
-          /> */}
         </NoticeListWrapper>
         <AddButton onClick={() => addTravel()}>알람 관리 완료</AddButton>
       </ContentWrapper>
