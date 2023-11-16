@@ -33,19 +33,20 @@ export default function Register() {
     setCurrentStep(1);
   };
   const registerUser = async () => {
-    if (!inputFirstStep()) return;
-    if (!inputSecondStep()) return;
-    if (!profileImg) return;
-    const sendData = new FormData();
-    sendData.append('email', getValues('email'));
-    sendData.append('password', getValues('password'));
-    sendData.append('password_again', getValues('passwordConfirm'));
-    sendData.append('gender', getValues('gender'));
-    sendData.append('birth', getValues('birth'));
-    sendData.append('name', getValues('name'));
-    sendData.append('face_image', profileImg);
-    const response = await postRegisterUser('signup', sendData);
-    console.log(response);
+    navigate('/');
+    // if (!inputFirstStep()) return;
+    // if (!inputSecondStep()) return;
+    // if (!profileImg) return;
+    // const sendData = new FormData();
+    // sendData.append('email', getValues('email'));
+    // sendData.append('password', getValues('password'));
+    // sendData.append('password_again', getValues('passwordConfirm'));
+    // sendData.append('gender', getValues('gender'));
+    // sendData.append('birth', getValues('birth'));
+    // sendData.append('name', getValues('name'));
+    // sendData.append('face_image', profileImg);
+    // const response = await postRegisterUser('signup', sendData);
+    // console.log(response);
   };
   const inputFirstStep = () => {
     if (
