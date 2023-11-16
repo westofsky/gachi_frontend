@@ -19,7 +19,6 @@ export default function Friend({src, email}: FriendInfoProps) {
     const userConfirm = confirm('여행에 초대하시겠습니까?');
     if (userConfirm) {
       const response = await inviteTrip(travelNumber, userEmail.email, email);
-      console.log(response);
       alert('초대했습니다.');
     }
   };

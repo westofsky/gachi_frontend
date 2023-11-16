@@ -12,11 +12,9 @@ export const getFriends = async () => {
       const responsedData = await response.json();
       return responsedData;
     } else {
-      console.error('친구 가져오기 요청 실패:', response);
       throw new Error('친구 가져오기 요청 실패');
     }
   } catch (error) {
-    console.error('친구 가져오기 중 오류 발생:', error);
     throw new Error('친구 가져오기 중 오류 발생');
   }
 };
@@ -37,11 +35,9 @@ export const getFriendRequest = async () => {
       const responsedData = await response.json();
       return responsedData;
     } else {
-      console.error('친구요청 가져오기 요청 실패:', response);
       throw new Error('친구요청 가져오기 요청 실패');
     }
   } catch (error) {
-    console.error('친구요청 가져오기 중 오류 발생:', error);
     throw new Error('친구요청 가져오기 중 오류 발생');
   }
 };

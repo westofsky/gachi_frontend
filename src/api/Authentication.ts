@@ -52,7 +52,6 @@ export const getLoginUser = async (
     );
     return response;
   } catch (error) {
-    console.log(error);
     throw new Error('로그인 오류');
   }
 };

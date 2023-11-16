@@ -12,11 +12,9 @@ export const getUserTrip = async () => {
       const responsedData = await response.json();
       return responsedData;
     } else {
-      console.error('여행 가져오기 요청 실패:', response);
       throw new Error('여행 가져오기 요청 실패');
     }
   } catch (error) {
-    console.error('여행 가져오기 중 오류 발생:', error);
     throw new Error('여행 가져오기 중 오류 발생');
   }
 };
@@ -44,11 +42,9 @@ export const addTrip = async (
       const responsedData = await response.json();
       return responsedData;
     } else {
-      console.error('여행 추가 요청 실패:', response);
       throw new Error('여행 추가 요청 실패');
     }
   } catch (error) {
-    console.error('여행 추가 중 오류 발생:', error);
     throw new Error('여행 추가 중 오류 발생');
   }
 };
@@ -69,11 +65,9 @@ export const getTripRequest = async () => {
       const responsedData = await response.json();
       return responsedData;
     } else {
-      console.error('여행 요청 가져오기 요청 실패:', response);
       throw new Error('여행 요청 가져오기 요청 실패');
     }
   } catch (error) {
-    console.error('여행 요청 가져오기 중 오류 발생:', error);
     throw new Error('여행 요청 가져오기 중 오류 발생');
   }
 };
@@ -143,7 +137,6 @@ export const inviteTrip = async (
       },
     );
     const responseData = await response.json();
-    console.log(response);
     return responseData;
   } catch (error) {
     throw new Error('여행 초대 중 오류 발생');

@@ -7,7 +7,7 @@ interface friendProps {
   user: string;
   friend: string;
 }
-export default function InviteTripModal(onClick: any) {
+export default function InviteTripModal({onClick}: any) {
   const [friends, setFriends] = useState([]);
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
