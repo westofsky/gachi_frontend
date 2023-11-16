@@ -9,6 +9,7 @@ import TripCard from '../../components/Home/TripCard';
 import {AiFillBell} from 'react-icons/ai';
 import NotificationModal from '../../components/Home/NotificationModal';
 import {getUserTrip} from '../../api/Trip';
+import EmptyTripCard from '../../components/Home/EmptyTripCard';
 interface tripProps {
   arriving_date: string;
   departing_date: string;
@@ -54,15 +55,21 @@ export default function Home() {
       </LogoWrapper>
       <TripItemGallery>
         <TripItemWrapper>
-          {trips.map((item: tripProps) => (
-            <TripCard
-              key={item.id}
-              date={`${item.departing_date}-${item.arriving_date}`}
-              tripName={item.place}
-              dday={getDDay(item.departing_date)}
-              memos={[]}
-            />
-          ))}
+          {trips.length > 0 ? (
+            <>
+              {trips.map((item: tripProps) => (
+                <TripCard
+                  key={item.id}
+                  date={`${item.departing_date}-${item.arriving_date}`}
+                  tripName={item.place}
+                  dday={getDDay(item.departing_date)}
+                  memos={[]}
+                />
+              ))}
+            </>
+          ) : (
+            <EmptyTripCard />
+          )}
         </TripItemWrapper>
       </TripItemGallery>
       <Bottom />
