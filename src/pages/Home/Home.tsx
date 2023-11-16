@@ -9,13 +9,36 @@ import TripCard from '../../components/Home/TripCard';
 import {AiFillBell} from 'react-icons/ai';
 import NotificationModal from '../../components/Home/NotificationModal';
 import {getUserTrip} from '../../api/Trip';
+interface tripProps {
+  arriving_date: string;
+  departing_date: string;
+  id: number;
+  place: string;
+  users: Array<string>;
+}
 export default function Home() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
   const [showNotice, setShowNotice] = useState(false);
+  const [trips, setTrips] = useState([]);
+  const getDDay = (start: string) => {
+    const date1 = new Date(start);
+    const date2 = new Date();
+
+    const timeDifferenceInMilliseconds = date1.getTime() - date2.getTime();
+    const timeDifferenceInDays = Math.floor(
+      timeDifferenceInMilliseconds / (1000 * 60 * 60 * 24),
+    );
+
+    if (timeDifferenceInDays < 0) {
+      return `+${Math.abs(timeDifferenceInDays)}`;
+    } else {
+      return `-${timeDifferenceInDays}`;
+    }
+  };
   useEffect(() => {
     const fetchTrip = async () => {
       const response = await getUserTrip();
-      console.log(response);
+      setTrips(response);
     };
     fetchTrip();
   }, [isAdd]);
@@ -31,14 +54,15 @@ export default function Home() {
       </LogoWrapper>
       <TripItemGallery>
         <TripItemWrapper>
-          <TripCard date={''} tripName={''} dday={''} memos={[]} />
-          <TripCard
-            date={'2023.5.2-2023.5.13'}
-            tripName={'도쿄 여행'}
-            dday={'4'}
-            memos={['여행가서할거1', '여행가서할거2', '여행가서할거3']}
-          />
-          <TripCard date={''} tripName={''} dday={''} memos={[]} />
+          {trips.map((item: tripProps) => (
+            <TripCard
+              key={item.id}
+              date={`${item.departing_date}-${item.arriving_date}`}
+              tripName={item.place}
+              dday={getDDay(item.departing_date)}
+              memos={[]}
+            />
+          ))}
         </TripItemWrapper>
       </TripItemGallery>
       <Bottom />

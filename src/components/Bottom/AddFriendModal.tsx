@@ -1,8 +1,15 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import Friend from './Friend';
 import {GrAdd} from 'react-icons/gr';
+import {getFriends} from '../../api/Friend';
+interface friendProps {
+  id: number;
+  user: string;
+  friend: string;
+}
 export default function AddFriendModal({onClick}: any) {
+  const [friends, setFriends] = useState([]);
   const modalRef = useRef(null);
   const modalOutClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (modalRef.current === e.target) {
@@ -12,6 +19,13 @@ export default function AddFriendModal({onClick}: any) {
   const addTravel = () => {
     onClick(false);
   };
+  useEffect(() => {
+    const fetchFriend = async () => {
+      const response = await getFriends();
+      setFriends(response);
+    };
+    fetchFriend();
+  }, []);
   return (
     <Wrapper
       ref={modalRef}
@@ -22,10 +36,12 @@ export default function AddFriendModal({onClick}: any) {
       <ContentWrapper>
         <AddTripTitle>친구 목록</AddTripTitle>
         <FriendListWrapper>
-          <Friend src="/images/sample.png" email="clcc001@naver.com" />
-          <Friend src="/images/sample2.png" email="westofsky159@gmail.com" />
+          {friends.map((friend: friendProps) => (
+            <Friend src={friend.friend} email={friend.friend} />
+          ))}
+          {/* <Friend src="/images/sample2.png" email="westofsky159@gmail.com" />
           <Friend src="/images/sample3.png" email="limj99@naver.com" />
-          <Friend src="/images/sample4.png" email="hongildong@naver.com" />
+          <Friend src="/images/sample4.png" email="hongildong@naver.com" /> */}
         </FriendListWrapper>
         <AddFriendWrapper>
           <AddFriendInput placeholder="친구 추가 할 이메일 입력하세요" />

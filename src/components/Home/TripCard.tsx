@@ -18,7 +18,7 @@ export default function TripCard({date, tripName, dday, memos}: TripCardProps) {
         <TripItem>
           <Travel.Date>{date}</Travel.Date>
           <Travel.Title>{tripName}</Travel.Title>
-          <Travel.DDay>{`D-${dday}`}</Travel.DDay>
+          <Travel.DDay>{`D ${dday}일`}</Travel.DDay>
           <Travel.TodoBox>
             {memos.map((item, index) => (
               <Travel.Todo key={index}>{item}</Travel.Todo>

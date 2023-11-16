@@ -10,7 +10,7 @@ export default function Friend({src, email}: FriendInfoProps) {
   return (
     <FriendWrapper>
       <FriendInfo>
-        <FriendProfile src={src} />
+        <FriendProfile />
         <FriendEmail>{email}</FriendEmail>
       </FriendInfo>
     </FriendWrapper>
