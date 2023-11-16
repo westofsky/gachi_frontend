@@ -12,15 +12,16 @@ export default function Main() {
     navigate('/register');
   };
   const handleLoginClick = async () => {
-    if (!email || !password) {
-      alert('이메일 또는 비밀번호를 입력해주세요.');
-      return;
-    }
-    const response = await getLoginUser('login', email, password);
-    if (response.ok) {
-      alert('로그인 되었습니다.');
-      navigate('/home');
-    }
+    navigate('/home');
+    // if (!email || !password) {
+    //   alert('이메일 또는 비밀번호를 입력해주세요.');
+    //   return;
+    // }
+    // const response = await getLoginUser('login', email, password);
+    // if (response.ok) {
+    //   alert('로그인 되었습니다.');
+    //   navigate('/home');
+    // }
   };
   return (
     <>
