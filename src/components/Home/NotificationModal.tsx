@@ -29,6 +29,7 @@ export default function NotificationModal({onClick}: any) {
   useEffect(() => {
     const fetchNotice = async () => {
       const responseFriend = await getFriendRequest();
+      console.log(responseFriend);
       setNoticeFriend(responseFriend);
       const responseTrip = await getTripRequest();
       setNoticeTrip(responseTrip);
@@ -47,6 +48,7 @@ export default function NotificationModal({onClick}: any) {
         <NoticeListWrapper>
           {noticeFriend.map((friend: friendProps) => (
             <Notice
+              key={friend.id}
               src={friend.sender}
               id={friend.id}
               email={friend.sender}
@@ -55,6 +57,7 @@ export default function NotificationModal({onClick}: any) {
           ))}
           {noticeTrip.map((tripItem: tripProps) => (
             <Notice
+              key={tripItem.id}
               src={tripItem.sender}
               id={tripItem.id}
               tripId={tripItem.trip}

@@ -62,7 +62,8 @@ export const addFriend = async (sender: string, receiver: string) => {
         body: JSON.stringify(data),
       },
     );
-    return response;
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
     throw new Error('친구요청 가져오기 중 오류 발생');
   }

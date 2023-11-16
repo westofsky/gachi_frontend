@@ -1,5 +1,7 @@
 import {atom} from 'recoil';
+import {recoilPersist} from 'recoil-persist';
 
+const {persistAtom} = recoilPersist();
 export const isAddTripState = atom({
   key: 'isAddTripState',
   default: false,
@@ -18,4 +20,5 @@ export const userInfoState = atom({
   default: {
     email: '',
   },
+  effects_UNSTABLE: [persistAtom],
 });

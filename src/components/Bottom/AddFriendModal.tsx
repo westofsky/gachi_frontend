@@ -26,10 +26,10 @@ export default function AddFriendModal({onClick}: any) {
       return;
     }
     const response = await addFriend(userEmail.email, receiver);
-    if (response.ok) {
+    if (!response.message) {
       alert('친구추가 되었습니다.');
     } else {
-      alert('잘못된 친구입니다.');
+      alert(response.message);
     }
   };
   const closeModal = () => {

@@ -23,6 +23,7 @@ export default function Notice({
   useEffect(() => {
     const getImage = async () => {
       const imageSrc = await getUserImage(src);
+      console.log(imageSrc);
       setUserImage(imageSrc);
     };
     getImage();

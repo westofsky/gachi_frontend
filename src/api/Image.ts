@@ -12,6 +12,7 @@ export const getImage = async (email: string) => {
     );
     const responsedData = await response.json();
     console.log(responsedData);
+    return responsedData.face_image;
     if (response.ok) {
       return responsedData;
     }
