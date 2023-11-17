@@ -3,21 +3,21 @@ import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
 import Bottom from '../../components/Home/Bottom';
 import {useRecoilState} from 'recoil';
-import {isAddTripState, selectedTravelItemState} from '../../atoms/atom';
+import {isAddTripState} from '../../atoms/atom';
 import {WiDirectionLeft} from 'react-icons/wi';
 import AddTripComponent from '../../components/Bottom/AddTripComponent';
 import InviteTripModal from '../../components/TripItem/InviteTrip/InviteTripModal';
-import shortid from 'https://cdn.skypack.dev/shortid@2.2.16';
 import {useNavigate} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import {getTripInfo} from '../../api/Trip';
+import {getTripImages, uploadImage} from '../../api/Image';
 import {getUserImage} from '../../utils/getUserImage';
+import Uploading from '../../components/TripItem/Uploading';
 interface FileData {
-  id: string;
-  filename: string;
-  filetype: string;
-  fileimage: string;
-  datetime: string;
+  id: number;
+  trip: number;
+  image: string;
+  upload_date: string;
 }
 interface TripInfoProps {
   id: number;
@@ -35,39 +35,46 @@ export default function TravelItem() {
   const navigate = useNavigate();
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
   const [isInvite, setIsInvite] = useState(false);
-  const [tripItem, setTripItem] = useRecoilState(selectedTravelItemState);
   const [Files, setFiles] = useState<FileData[]>([]);
   const {travelNumber} = useParams();
   const [tripInfo, setTripInfo] = useState<TripInfoProps>();
   const [inTripUser, setInTripUser] = useState<InTripUserProps>();
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+  const [showUserImage, setShowUserImage] = useState(false);
+  const [isUpload, setIsUpload] = useState(false);
+  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-
     const files = Array.from(e.target.files);
-    const images: File[] = [];
 
-    files.forEach((file) => {
-      if (!file.name.match(/.(jpg|jpeg|png)$/i)) {
-        alert('jpg,jpeg,png만 넣어주세요.');
-        return;
-      }
-      images.push(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFiles((preValue) => [
-          ...preValue,
-          {
-            id: shortid.generate(),
-            filename: file.name,
-            filetype: file.type,
-            fileimage: reader.result as string,
-            datetime: file.lastModified.toLocaleString('ko-KR'),
-          },
-        ]);
-      };
-      reader.readAsDataURL(file);
-    });
+    setIsUpload(true);
+    try {
+      // Promise.all을 사용하여 모든 파일 업로드를 기다림
+      await Promise.all(
+        files.map(async (file) => {
+          if (!file.name.match(/.(jpg|jpeg|png)$/i)) {
+            alert('jpg, jpeg, png만 넣어주세요.');
+            return;
+          }
+
+          const date = new Date();
+          const year = date.getFullYear();
+          const month = ('0' + (date.getMonth() + 1)).slice(-2);
+          const day = ('0' + date.getDate()).slice(-2);
+          const dateStr = `${year}-${month}-${day}`;
+
+          const sendData = new FormData();
+          if (travelNumber) sendData.append('trip', travelNumber);
+          sendData.append('image', file);
+          sendData.append('upload_date', dateStr);
+
+          const response = await uploadImage(sendData);
+        }),
+      );
+    } catch (error) {
+      console.error('File upload error:', error);
+    }
+    setIsUpload(false);
   };
+
   useEffect(() => {
     const getTrip = async () => {
       const response = await getTripInfo(travelNumber);
@@ -89,12 +96,23 @@ export default function TravelItem() {
     };
     getTrip();
   }, [travelNumber]);
-
+  useEffect(() => {
+    const getTripImage = async () => {
+      if (showUserImage) {
+      } else {
+        const response = await getTripImages(travelNumber);
+        console.log(response);
+        setFiles(response);
+      }
+    };
+    getTripImage();
+  }, [showUserImage, travelNumber, isUpload]);
   if (!tripInfo) {
-    return <div>Loading...</div>;
+    return <Uploading text="여행 정보를 가져오는 중" />;
   }
   return (
     <>
+      {isUpload && <Uploading text="업로드 중" />}
       {isAdd && <AddTripComponent />}
       {isInvite && <InviteTripModal onClick={setIsInvite} />}
       <LogoWrapper>
@@ -119,13 +137,12 @@ export default function TravelItem() {
         {Files.length > 0 ? (
           <FileWrapper>
             {Files.map((data, index) => {
-              const {id, filename, filetype, fileimage, datetime, filesize} =
-                data;
+              const {image} = data;
               return (
                 <FileAtcBox key={index}>
                   <FileImage>
                     {' '}
-                    <FileImageImage src={fileimage} alt="" />
+                    <FileImageImage src={image} alt="" />
                   </FileImage>
                   {/* <FileDetail>{filename.substring(0, 4) + '...'}</FileDetail> */}
                 </FileAtcBox>
