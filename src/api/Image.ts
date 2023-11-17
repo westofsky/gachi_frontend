@@ -34,6 +34,24 @@ export const getTripImages = async (id: string | undefined) => {
     throw new Error('여행 이미지 가져오는 중 오류 발생');
   }
 };
+export const getMyImages = async (id: string | undefined, email: string) => {
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + 'image/' + id + '?email=' + email,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      },
+    );
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw new Error('여행 이미지 가져오는 중 오류 발생');
+  }
+};
 export const uploadImage = async (data: FormData) => {
   try {
     const response = await fetch(import.meta.env.VITE_API_URL + 'image/', {

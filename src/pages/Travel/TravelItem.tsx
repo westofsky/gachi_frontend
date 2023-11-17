@@ -2,15 +2,15 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import Logo from '../../components/Main/Logo';
 import styled from 'styled-components';
 import Bottom from '../../components/Home/Bottom';
-import {useRecoilState} from 'recoil';
-import {isAddTripState} from '../../atoms/atom';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {isAddTripState, userInfoState} from '../../atoms/atom';
 import {WiDirectionLeft} from 'react-icons/wi';
 import AddTripComponent from '../../components/Bottom/AddTripComponent';
 import InviteTripModal from '../../components/TripItem/InviteTrip/InviteTripModal';
 import {useNavigate} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import {getTripInfo} from '../../api/Trip';
-import {getTripImages, uploadImage} from '../../api/Image';
+import {getMyImages, getTripImages, uploadImage} from '../../api/Image';
 import {getUserImage} from '../../utils/getUserImage';
 import Uploading from '../../components/TripItem/Uploading';
 interface FileData {
@@ -41,13 +41,13 @@ export default function TravelItem() {
   const [inTripUser, setInTripUser] = useState<InTripUserProps>();
   const [showUserImage, setShowUserImage] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
+  const userEmail = useRecoilValue(userInfoState);
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const files = Array.from(e.target.files);
 
     setIsUpload(true);
     try {
-      // Promise.all을 사용하여 모든 파일 업로드를 기다림
       await Promise.all(
         files.map(async (file) => {
           if (!file.name.match(/.(jpg|jpeg|png)$/i)) {
@@ -74,7 +74,17 @@ export default function TravelItem() {
     }
     setIsUpload(false);
   };
-
+  const handleShowMine = async () => {
+    try {
+      setIsUpload(true);
+      const response = await getMyImages(travelNumber, userEmail.email);
+      console.log(response);
+    } catch (error) {
+      console.error('Error fetching images:', error);
+    } finally {
+      setIsUpload(false);
+    }
+  };
   useEffect(() => {
     const getTrip = async () => {
       const response = await getTripInfo(travelNumber);
@@ -148,7 +158,7 @@ export default function TravelItem() {
                 </FileAtcBox>
               );
             })}
-            <GetMine>내가 나온 사진 보기</GetMine>
+            <GetMine onClick={handleShowMine}>내가 나온 사진 보기</GetMine>
           </FileWrapper>
         ) : (
           <Image.EmptyImage>이미지가 없습니다.</Image.EmptyImage>
