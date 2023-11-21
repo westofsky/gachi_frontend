@@ -142,7 +142,7 @@ export default function Register() {
                 {...register('name', {
                   required: '이름은 필수 입력입니다.',
                   pattern: {
-                    value: /^[가-힣A-Za-z]+$/,
+                    value: /^[가-힣A-Za-z0-9]+$/,
                     message: '이름 형식에 맞지 않습니다.',
                   },
                 })}

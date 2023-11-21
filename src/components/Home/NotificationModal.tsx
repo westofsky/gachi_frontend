@@ -55,6 +55,7 @@ export default function NotificationModal({onClick}: any) {
       setNoticeFriend(responseFriend);
       const responseTrip = await getTripRequest();
       setNoticeTrip(responseTrip);
+      console.log(responseTrip);
     };
     fetchNotice();
   }, [reload]);
@@ -84,6 +85,7 @@ export default function NotificationModal({onClick}: any) {
               src={tripItem.sender}
               email={tripItem.sender}
               type="invite"
+              inviteName={tripItem.trip}
               onAccept={() => handleAccept('invite', tripItem.id)}
               onReject={() => handleReject('invite', tripItem.id)}
             />

@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {styled} from 'styled-components';
 import {getUserImage} from '../../utils/getUserImage';
+import {getTripInfo} from '../../api/Trip';
 
 interface NoticeInfoProps {
   src: string;
   email: string;
   type: string;
-  inviteName?: string;
+  inviteName?: number;
   onAccept: () => Promise<void>;
   onReject: () => Promise<void>;
 }
@@ -19,13 +20,22 @@ export default function Notice({
   onReject,
 }: NoticeInfoProps) {
   const [userImage, setUserImage] = useState('');
+  const [tripInfo, setTripInfo] = useState('');
 
   useEffect(() => {
     const getImage = async () => {
       const imageSrc = await getUserImage(src);
       setUserImage(imageSrc);
     };
+    const getTrip = async () => {
+      const tripInfo = await getTripInfo(inviteName);
+      setTripInfo(tripInfo.place);
+    };
+
     getImage();
+    if (type !== 'friend') {
+      getTrip();
+    }
   }, [src]);
   return (
     <NoticeWrapper>
@@ -35,7 +45,7 @@ export default function Notice({
           {email}으로부터
           {type === 'friend'
             ? ' 친구 요청이 왔습니다.'
-            : ` ${inviteName} 초대 받았습니다.`}
+            : ` ${tripInfo} 초대 받았습니다.`}
         </NoticeEmail>
         <ButtonWrapper>
           <Accept onClick={() => onAccept()}>수락</Accept>

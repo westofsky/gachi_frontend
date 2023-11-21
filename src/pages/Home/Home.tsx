@@ -10,6 +10,7 @@ import {AiFillBell} from 'react-icons/ai';
 import NotificationModal from '../../components/Home/NotificationModal';
 import {getUserTrip} from '../../api/Trip';
 import EmptyTripCard from '../../components/Home/EmptyTripCard';
+import Uploading from '../../components/TripItem/Uploading';
 interface tripProps {
   arriving_date: string;
   departing_date: string;
@@ -21,6 +22,7 @@ export default function Home() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
   const [showNotice, setShowNotice] = useState(false);
   const [trips, setTrips] = useState([]);
+  const [isTrip, setIsTrip] = useState(false);
   const getDDay = (start: string) => {
     const date1 = new Date(start);
     const date2 = new Date();
@@ -37,14 +39,17 @@ export default function Home() {
     }
   };
   useEffect(() => {
+    setIsTrip(true);
     const fetchTrip = async () => {
       const response = await getUserTrip();
       setTrips(response);
+      setIsTrip(false);
     };
     fetchTrip();
-  }, [isAdd]);
+  }, [isAdd, showNotice]);
   return (
     <>
+      {isTrip && <Uploading text="여행을 가져오는 중" />}
       {isAdd && <AddTripComponent />}
       {showNotice && <NotificationModal onClick={setShowNotice} />}
       <LogoWrapper>

@@ -37,7 +37,7 @@ export const getTripImages = async (id: string | undefined) => {
 export const getMyImages = async (id: string | undefined, email: string) => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_API_URL + 'image/' + id + '?email=' + email,
+      import.meta.env.VITE_API_URL + 'image/' + id + '/email=' + email,
       {
         method: 'GET',
         headers: {

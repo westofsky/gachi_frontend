@@ -37,9 +37,9 @@ export const addTrip = async (
       },
       body: JSON.stringify(data),
     });
-
+    const responsedData = await response.json();
+    console.log(responsedData);
     if (response.ok) {
-      const responsedData = await response.json();
       return responsedData;
     } else {
       throw new Error('여행 추가 요청 실패');
@@ -96,7 +96,7 @@ export const processTripRequest = async (
     throw new Error('여행 초대 수락 중 오류 발생');
   }
 };
-export const getTripInfo = async (id: string | undefined) => {
+export const getTripInfo = async (id: string | undefined | number) => {
   try {
     const response = await fetch(
       import.meta.env.VITE_API_URL + 'trip/' + id + '/',

@@ -28,7 +28,9 @@ export default function Main() {
       alert('로그인 되었습니다.');
       navigate('home');
     } else {
-      alert('로그인에 실패하였습니다.');
+      const message = await response.json();
+      alert(message.message);
+      // alert('로그인에 실패하였습니다.');
     }
   };
   return (
