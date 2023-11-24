@@ -142,3 +142,27 @@ export const inviteTrip = async (
     throw new Error('여행 초대 중 오류 발생');
   }
 };
+
+export const setMemo = async (id: number, memo: string) => {
+  const data = {
+    memo: memo,
+  };
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + 'trip/' + id + '/memo/',
+      {
+        method: 'Patch',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+        body: JSON.stringify(data),
+      },
+    );
+    const responseData = await response.json();
+    console.log(responseData);
+    return responseData;
+  } catch (error) {
+    throw new Error('여행 초대 수락 중 오류 발생');
+  }
+};

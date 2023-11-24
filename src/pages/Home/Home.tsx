@@ -17,6 +17,7 @@ interface tripProps {
   id: number;
   place: string;
   users: Array<string>;
+  memo: string;
 }
 export default function Home() {
   const [isAdd, setIsAdd] = useRecoilState(isAddTripState);
@@ -42,6 +43,7 @@ export default function Home() {
     setIsTrip(true);
     const fetchTrip = async () => {
       const response = await getUserTrip();
+      console.log(response);
       setTrips(response);
       setIsTrip(false);
     };
@@ -69,7 +71,7 @@ export default function Home() {
                   date={`${item.departing_date}-${item.arriving_date}`}
                   tripName={item.place}
                   dday={getDDay(item.departing_date)}
-                  memos={[]}
+                  memo={item.memo}
                 />
               ))}
             </>

@@ -1,22 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import EmptyTripCard from './EmptyTripCard';
 import {useNavigate} from 'react-router-dom';
+import {setMemo} from '../../api/Trip';
 interface TripCardProps {
   date: string;
   tripName: string;
   dday: string;
-  memos: string[];
   id: number;
+  memo: string;
 }
 export default function TripCard({
   date,
   tripName,
   dday,
-  memos,
   id,
+  memo,
 }: TripCardProps) {
   const navigate = useNavigate();
+  const [memoMode, setMemoMode] = useState(false);
+  const [memos, setMemos] = useState(memo);
+
+  const reviseMemo = () => {
+    const response = setMemo(id, memos);
+    console.log(response);
+  };
   return (
     <>
       {!tripName ? (
@@ -27,9 +35,24 @@ export default function TripCard({
           <Travel.Title>{tripName}</Travel.Title>
           <Travel.DDay>{`D ${dday}일`}</Travel.DDay>
           <Travel.TodoBox>
-            {memos.map((item, index) => (
-              <Travel.Todo key={index}>{item}</Travel.Todo>
-            ))}
+            {memoMode ? (
+              <>
+                <Travel.TextArea
+                  value={memos}
+                  onChange={(event) => setMemos(event.target.value)}
+                />
+                <div style={{display: 'flex', marginTop: '10px', gap: '4px'}}>
+                  <Travel.MemoAccept onClick={() => reviseMemo()}>
+                    메모수정
+                  </Travel.MemoAccept>
+                  <Travel.MemoReject onClick={() => setMemoMode(false)}>
+                    취소
+                  </Travel.MemoReject>
+                </div>
+              </>
+            ) : (
+              <>{memos}</>
+            )}
           </Travel.TodoBox>
           <NotYet.Split>
             <NotYet.SplitWrapper>
@@ -39,7 +62,9 @@ export default function TripCard({
             </NotYet.SplitWrapper>
           </NotYet.Split>
           <Travel.CloudBox>
-            <Travel.EditMemo>메모 수정</Travel.EditMemo>
+            <Travel.EditMemo onClick={() => setMemoMode(true)}>
+              메모 수정
+            </Travel.EditMemo>
             <Travel.PhotoCloud onClick={() => navigate('/travel-list/' + id)}>
               사진 보기
             </Travel.PhotoCloud>
@@ -174,6 +199,29 @@ const Travel = {
     background: #e3fdfd;
     display: flex;
     flex-direction: column;
+  `,
+  TextArea: styled.textarea`
+    width: 90%;
+    height: 90%;
+    padding: 10px;
+  `,
+  MemoAccept: styled.div`
+    width: 48%;
+    background-color: #71c9ce;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+  `,
+  MemoReject: styled.div`
+    width: 48%;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px;
+    text-align: center;
   `,
   Todo: styled.p`
     color: #000;
