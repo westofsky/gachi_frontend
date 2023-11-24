@@ -95,7 +95,7 @@ const LogoWrapper = styled.div`
 
 const TripItemGallery = styled.div`
   width: 100%;
-  height: 100%;
+  height: 80%;
   overflow: hidden;
 `;
 const TripItemWrapper = styled.div`
