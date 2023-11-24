@@ -24,6 +24,15 @@ export default function Home() {
   const [showNotice, setShowNotice] = useState(false);
   const [trips, setTrips] = useState([]);
   const [isTrip, setIsTrip] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(-1);
+  const calculateTransform = (index: number) => {
+    if (selectedCard === -1) {
+      return `translate(${(trips.length - 1) * 36}%, 0%)`;
+    } else {
+      return `translate(${(trips.length - 1) * 36 - selectedCard * 72}%, 0%)`;
+    }
+  };
+
   const getDDay = (start: string) => {
     const date1 = new Date(start);
     const date2 = new Date();
@@ -39,11 +48,13 @@ export default function Home() {
       return `-${timeDifferenceInDays}`;
     }
   };
+  const handleCardClick = (index: number) => {
+    setSelectedCard(index);
+  };
   useEffect(() => {
     setIsTrip(true);
     const fetchTrip = async () => {
       const response = await getUserTrip();
-      console.log(response);
       setTrips(response);
       setIsTrip(false);
     };
@@ -61,10 +72,10 @@ export default function Home() {
         </div>
       </LogoWrapper>
       <TripItemGallery>
-        <TripItemWrapper>
+        <TripItemWrapper style={{transform: calculateTransform(0)}}>
           {trips.length > 0 ? (
             <>
-              {trips.map((item: tripProps) => (
+              {trips.map((item: tripProps, index: number) => (
                 <TripCard
                   key={item.id}
                   id={item.id}
@@ -72,6 +83,7 @@ export default function Home() {
                   tripName={item.place}
                   dday={getDDay(item.departing_date)}
                   memo={item.memo}
+                  onClick={() => handleCardClick(index)}
                 />
               ))}
             </>
@@ -105,8 +117,7 @@ const TripItemWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  transform: translate(-27%, 0%);
-  width: 216%;
+  transition: transform 0.5s;
 `;
 
 const Travel = {

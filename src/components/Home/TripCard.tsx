@@ -9,6 +9,7 @@ interface TripCardProps {
   dday: string;
   id: number;
   memo: string;
+  onClick: () => void;
 }
 export default function TripCard({
   date,
@@ -16,6 +17,7 @@ export default function TripCard({
   dday,
   id,
   memo,
+  onClick,
 }: TripCardProps) {
   const navigate = useNavigate();
   const [memoMode, setMemoMode] = useState(false);
@@ -30,7 +32,7 @@ export default function TripCard({
       {!tripName ? (
         <EmptyTripCard />
       ) : (
-        <TripItem>
+        <TripItem onClick={onClick}>
           <Travel.Date>{date}</Travel.Date>
           <Travel.Title>{tripName}</Travel.Title>
           <Travel.DDay>{`D ${dday}일`}</Travel.DDay>
@@ -77,6 +79,7 @@ export default function TripCard({
 
 const TripItem = styled.div`
   width: 270px;
+  cursor: pointer;
   height: 415px;
   border-radius: 16px;
   background: #fff;
