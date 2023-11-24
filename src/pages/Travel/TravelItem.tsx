@@ -83,7 +83,10 @@ export default function TravelItem() {
     try {
       setIsUpload(true);
       const response = await getMyImages(travelNumber, userEmail.email);
-      console.log(response);
+      if (response.ok) {
+        const data = await response.json();
+        setFiles(data);
+      }
     } catch (error) {
       console.error('Error fetching images:', error);
     } finally {

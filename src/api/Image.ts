@@ -37,7 +37,7 @@ export const getTripImages = async (id: string | undefined) => {
 export const getMyImages = async (id: string | undefined, email: string) => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_API_URL + 'image/' + id + '/email=' + email,
+      import.meta.env.VITE_API_URL + 'image/' + id + '?email=' + email,
       {
         method: 'GET',
         headers: {
@@ -46,8 +46,7 @@ export const getMyImages = async (id: string | undefined, email: string) => {
         },
       },
     );
-    const responseData = await response.json();
-    return responseData;
+    return response;
   } catch (error) {
     throw new Error('여행 이미지 가져오는 중 오류 발생');
   }
