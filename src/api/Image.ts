@@ -67,3 +67,21 @@ export const uploadImage = async (data: FormData) => {
     throw new Error('이미지 업로드 오류');
   }
 };
+
+export const deleteImage = async (id: string) => {
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + 'image/' + id + '/',
+      {
+        method: 'Delete',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      },
+    );
+    return response;
+  } catch (error) {
+    throw new Error('여행 이미지 가져오는 중 오류 발생');
+  }
+};

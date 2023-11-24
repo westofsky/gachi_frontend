@@ -10,7 +10,12 @@ import InviteTripModal from '../../components/TripItem/InviteTrip/InviteTripModa
 import {useNavigate} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import {getTripInfo} from '../../api/Trip';
-import {getMyImages, getTripImages, uploadImage} from '../../api/Image';
+import {
+  deleteImage,
+  getMyImages,
+  getTripImages,
+  uploadImage,
+} from '../../api/Image';
 import {getUserImage} from '../../utils/getUserImage';
 import Uploading from '../../components/TripItem/Uploading';
 interface FileData {
@@ -85,6 +90,19 @@ export default function TravelItem() {
       setIsUpload(false);
     }
   };
+  const handleDelete = async (id: number) => {
+    try {
+      const userConfirm = confirm('해당 사진을 삭제하시겠습니까?');
+      if (userConfirm) {
+        const response = await deleteImage(id.toString());
+        if (response.ok) {
+          alert('삭제되었습니다.');
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching images:', error);
+    }
+  };
   useEffect(() => {
     const getTrip = async () => {
       const response = await getTripInfo(travelNumber);
@@ -150,6 +168,9 @@ export default function TravelItem() {
               const {image} = data;
               return (
                 <FileAtcBox key={index}>
+                  <FileDeleteBtn onClick={() => handleDelete(data.id)}>
+                    X
+                  </FileDeleteBtn>
                   <FileImage>
                     {' '}
                     <FileImageImage src={image} alt="" />
@@ -272,9 +293,25 @@ const FileAtcBox = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  position: relative;
   width: 70px;
 `;
 
+const FileDeleteBtn = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  background: white;
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 15px;
+  width: 15px;
+  font-size: 14px;
+  cursor: pointer;
+`;
 const FileImage = styled.div`
   width: 70px;
   height: 70px;
